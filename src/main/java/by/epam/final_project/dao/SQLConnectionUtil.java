@@ -8,6 +8,10 @@ public class SQLConnectionUtil {
     private static final String LOGIN = "root";
     private static final String PASSWORD = "rootroot";
 
+    static {
+        establishDatabaseDriver();
+    }
+
     public static void establishDatabaseDriver() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -41,6 +45,15 @@ public class SQLConnectionUtil {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Query exception.");
+        }
+    }
+
+    public static void closeConnection(Connection connection) {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Cannot close connection.");
         }
     }
 
