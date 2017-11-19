@@ -10,11 +10,9 @@
 
 <div class="container">
 	<section id="content">
-		<form name="loginForm" action="/login" method="post">
+		<form name="loginForm" action="/action" method="post">
+			<input type="hidden" name="command" value="login" />
 			<h1>Login Form</h1>
-			<div>
-				<input type="hidden" name="command" value="login" />
-			</div>
 			<div>
 				<input type="text" placeholder="Username" required="" name="login" />
 			</div>
@@ -23,7 +21,7 @@
 			</div>
 			<div>
 				<input type="submit" value="Log in" />
-				<a href="/registration">Register</a>
+				<a href="/jsp/registration.jsp">Register</a>
 			</div>
 		</form>
 	</section>

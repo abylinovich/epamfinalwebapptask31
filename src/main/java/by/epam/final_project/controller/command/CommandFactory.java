@@ -2,6 +2,7 @@ package by.epam.final_project.controller.command;
 
 import by.epam.final_project.controller.command.impl.FindCommand;
 import by.epam.final_project.controller.command.impl.LoginCommand;
+import by.epam.final_project.controller.command.impl.RegistrationCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class CommandFactory {
     static {
         commands.put("login", new LoginCommand());
         commands.put("findUser", new FindCommand());
+        commands.put("registration", new RegistrationCommand());
     }
 
     private CommandFactory() {

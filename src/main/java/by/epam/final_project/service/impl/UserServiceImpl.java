@@ -10,8 +10,13 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO = UserDAOFactory.getUserDAO();
 
     @Override
-    public User findUser(String login, String password) {
-        return userDAO.findUser(login, password);
+    public User findUserByLoginAndPassword(String login, String password) {
+        return userDAO.findUserByLoginAndPassword(login, password);
+    }
+
+    @Override
+    public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) {
+        userDAO.createNewUser(login, password, firstName, lastName, email, age);
     }
 
 }

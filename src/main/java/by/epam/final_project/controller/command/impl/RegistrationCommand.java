@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoginCommand implements Command {
+public class RegistrationCommand implements Command {
 
     private UserService userService = UserServiceFactory.getUserService();
 
@@ -19,10 +19,14 @@ public class LoginCommand implements Command {
     public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        User user = userService.findUserByLoginAndPassword(login, password);
-        request.setAttribute("user", user);
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String email = request.getParameter("email");
+        int age = Integer.parseInt(request.getParameter("age"));
+        userService.createNewUser(login, password, firstName, lastName, email, age);
+
         try {
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {

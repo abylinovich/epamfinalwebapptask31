@@ -5,6 +5,7 @@ import java.sql.*;
 public class SQLConnectionUtil {
 
     private static final String URL = "jdbc:mysql://localhost:3306/epamapplicationdb";
+    private static final String ENCODING_CHARSET = "?useUnicode=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "rootroot";
 
@@ -23,7 +24,7 @@ public class SQLConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(URL, LOGIN, PASSWORD);
+            return DriverManager.getConnection(URL + ENCODING_CHARSET, LOGIN, PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Cannot create connection.");
@@ -45,6 +46,15 @@ public class SQLConnectionUtil {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Query exception.");
+        }
+    }
+
+    public static void executeUpdate(Statement statement, String query) {
+        try {
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Update query exception.");
         }
     }
 

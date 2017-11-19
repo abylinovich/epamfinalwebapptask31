@@ -12,13 +12,14 @@ import java.sql.Statement;
 public class UserDAOImpl implements UserDAO {
 
     private static final String FIND_USER_QUERY = "SELECT * FROM user";
+    private static final String ADD_USER_QUERY = "INSERT INTO user";
 
     @Override
-    public User findUser(String login, String password) {
+    public User findUserByLoginAndPassword(String login, String password) {
         User user = new User();
         Connection connection = SQLConnectionUtil.getConnection();
         Statement statement = SQLConnectionUtil.createStatement(connection);
-        String whereCondition = " WHERE login = '" + login + "' AND password = '" + password + "'";
+        String whereCondition = createWhereCondition(login, password);
         ResultSet resultSet = SQLConnectionUtil.executeQuery(statement, FIND_USER_QUERY + whereCondition);
         try {
             if(resultSet.next()) {
@@ -28,7 +29,6 @@ public class UserDAOImpl implements UserDAO {
                 user.setLastName(resultSet.getString(5));
                 user.setEmail(resultSet.getString(6));
                 user.setAge(resultSet.getInt(7));
-                return user;
             } else {
                 throw new RuntimeException("No matches in database");
             }
@@ -36,7 +36,42 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
             throw new RuntimeException("Cannot create entity, database exception.");
         }
+        SQLConnectionUtil.closeConnection(connection);
+        return user;
+    }
 
+    private String createWhereCondition(String login, String password) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                " WHERE login = '" + login + "'" +
+                " AND password = '" + password + "'"
+        );
+        return sb.toString();
+    }
+
+    @Override
+    public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) {
+        Connection connection = SQLConnectionUtil.getConnection();
+        Statement statement = SQLConnectionUtil.createStatement(connection);
+        String valuesCondition = createValuesCondition(login, password, firstName, lastName, email, age);
+        SQLConnectionUtil.executeUpdate(statement, ADD_USER_QUERY + valuesCondition);
+        SQLConnectionUtil.closeConnection(connection);
+    }
+
+    private String createValuesCondition(String login, String password, String firstName, String lastName, String email, int age) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                " (login, password, first_name, last_name, email, age)" +
+                " VALUES (" +
+                "'" + login + "'" +
+                ", '" + password + "'" +
+                ", '" + firstName + "'" +
+                ", '" + lastName + "'" +
+                ", '" + email + "'" +
+                ", " + age +
+                ")"
+        );
+        return sb.toString();
     }
 
 }

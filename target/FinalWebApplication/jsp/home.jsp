@@ -15,6 +15,7 @@
         <h3>Age: ${requestScope.user.age}</h3>
         <h3>First name: ${requestScope.user.firstName}</h3>
         <h3>Last name: ${requestScope.user.lastName}</h3>
+        <h3>Email: ${requestScope.user.email}</h3>
     </section>
 </div>
 
