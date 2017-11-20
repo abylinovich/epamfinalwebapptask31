@@ -3,6 +3,7 @@ package by.epam.final_project.dao.impl;
 import by.epam.final_project.dao.SQLConnectionUtil;
 import by.epam.final_project.dao.UserDAO;
 import by.epam.final_project.entity.User;
+import by.epam.final_project.exception.DAOException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String ADD_USER_QUERY = "INSERT INTO user";
 
     @Override
-    public User findUserByLoginAndPassword(String login, String password) {
+    public User findUserByLoginAndPassword(String login, String password) throws DAOException {
         User user = new User();
         Connection connection = SQLConnectionUtil.getConnection();
         Statement statement = SQLConnectionUtil.createStatement(connection);
@@ -30,11 +31,10 @@ public class UserDAOImpl implements UserDAO {
                 user.setEmail(resultSet.getString(6));
                 user.setAge(resultSet.getInt(7));
             } else {
-                throw new RuntimeException("No matches in database");
+                throw new DAOException("No matches in database");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot create entity, database exception.");
+            throw new DAOException("Cannot create entity, database exception.");
         }
         SQLConnectionUtil.closeConnection(connection);
         return user;
@@ -50,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) {
+    public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws DAOException {
         Connection connection = SQLConnectionUtil.getConnection();
         Statement statement = SQLConnectionUtil.createStatement(connection);
         String valuesCondition = createValuesCondition(login, password, firstName, lastName, email, age);

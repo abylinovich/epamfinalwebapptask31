@@ -1,5 +1,7 @@
 package by.epam.final_project.dao;
 
+import by.epam.final_project.exception.DAOException;
+
 import java.sql.*;
 
 public class SQLConnectionUtil {
@@ -9,61 +11,48 @@ public class SQLConnectionUtil {
     private static final String LOGIN = "root";
     private static final String PASSWORD = "rootroot";
 
-    static {
-        establishDatabaseDriver();
-    }
-
-    public static void establishDatabaseDriver() {
+    public static Connection getConnection() throws DAOException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot found database driver.");
+            throw new DAOException("Cannot found database driver.");
         }
-    }
-
-    public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL + ENCODING_CHARSET, LOGIN, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot create connection.");
+            throw new DAOException("Cannot create connection.");
         }
     }
 
-    public static Statement createStatement(Connection connection) {
+    public static Statement createStatement(Connection connection) throws DAOException {
         try {
             return connection.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot create statement.");
+            throw new DAOException("Cannot create statement.");
         }
     }
 
-    public static ResultSet executeQuery(Statement statement, String query) {
+    public static ResultSet executeQuery(Statement statement, String query) throws DAOException {
         try {
             return statement.executeQuery(query);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Query exception.");
+            throw new DAOException("Query exception.");
         }
     }
 
-    public static void executeUpdate(Statement statement, String query) {
+    public static void executeUpdate(Statement statement, String query) throws DAOException {
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Update query exception.");
+            throw new DAOException("Update query exception.");
         }
     }
 
-    public static void closeConnection(Connection connection) {
+    public static void closeConnection(Connection connection) throws DAOException {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot close connection.");
+            throw new DAOException("Cannot close connection.");
         }
     }
 

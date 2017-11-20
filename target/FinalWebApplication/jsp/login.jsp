@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<jsp:include page="/jsp/blocks/header.jsp"/>
+<jsp:include page="/jsp/block/header.jsp"/>
 
 <div class="container">
 	<section id="content">
@@ -26,7 +26,6 @@
 		</form>
 	</section>
 </div>
-<%--<input type="button" onclick="location.href='/registration'" value="Register" />--%>
 
     <script  src="../resources/js/index.js"></script>
 

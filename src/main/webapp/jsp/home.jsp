@@ -5,8 +5,8 @@
     <title>Home</title>
 </head>
 <body>
-<%--<jsp:include page="/jsp/blocks/header.jsp"/>--%>
-<%--<jsp:include page="/jsp/blocks/logout.jsp"/>--%>
+<jsp:include page="/jsp/block/header.jsp"/>
+<jsp:include page="/jsp/block/logout.jsp"/>
 <div class="container">
     <section id="content">
         <h1>User information</h1>

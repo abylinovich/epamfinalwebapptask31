@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<jsp:include page="/jsp/blocks/header.jsp"/>
+<jsp:include page="/jsp/block/header.jsp"/>
 
 <div class="container">
 	<section id="content">
@@ -38,9 +38,9 @@
 				<input type="submit" value="Register" />
 				<a href="/jsp/login.jsp">Back to login page</a>
 			</div>
-		</form><!-- form -->
-	</section><!-- content -->
-</div><!-- container -->
+		</form>
+	</section>
+</div>
 
     <script  src="../resources/js/index.js"></script>
 
