@@ -1,31 +1,33 @@
 package by.epam.final_project.service.impl;
 
-import by.epam.final_project.dao.UserDAO;
 import by.epam.final_project.dao.UserDAOFactory;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.exception.DAOException;
 import by.epam.final_project.exception.ServiceException;
 import by.epam.final_project.service.UserService;
 
+import static by.epam.final_project.exception.message.ServiceExceptionMessageUtil.CANNOT_CREATE_USER_MESSAGE;
+import static by.epam.final_project.exception.message.ServiceExceptionMessageUtil.CANNOT_FIND_USER_MESSAGE;
+
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO = UserDAOFactory.getUserDAO();
+    private UserDAOFactory userDAOFactory = UserDAOFactory.getInstance();
 
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws ServiceException {
         try {
-            return userDAO.findUserByLoginAndPassword(login, password);
+            return userDAOFactory.getUserDAO().findUserByLoginAndPassword(login, password);
         } catch (DAOException e) {
-            throw new ServiceException("No user found");
+            throw new ServiceException(CANNOT_FIND_USER_MESSAGE, e);
         }
     }
 
     @Override
     public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException {
         try {
-            userDAO.createNewUser(login, password, firstName, lastName, email, age);
+            userDAOFactory.getUserDAO().createNewUser(login, password, firstName, lastName, email, age);
         } catch (DAOException e) {
-            throw new ServiceException("Cannot create new user");
+            throw new ServiceException(CANNOT_CREATE_USER_MESSAGE, e);
         }
     }
 

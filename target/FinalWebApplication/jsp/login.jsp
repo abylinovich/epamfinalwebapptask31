@@ -21,6 +21,7 @@
 			</div>
 			<div>
 				<input type="submit" value="Log in" />
+				<%--<button type="submit" formaction="/action_page2.php">Submit to another page</button>--%>
 				<a href="/jsp/registration.jsp">Register</a>
 			</div>
 		</form>

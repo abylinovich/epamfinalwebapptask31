@@ -10,10 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UserDAOImpl implements UserDAO {
+import static by.epam.final_project.dao.SQLQueryMessageUtil.SELECT_ALL_FROM_USER_QUERY;
+import static by.epam.final_project.dao.SQLQueryMessageUtil.INSERT_INTO_USER_QUERY;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_ENTITY_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.NO_MATCHES_IN_DATABASE_MESSAGE;
 
-    private static final String FIND_USER_QUERY = "SELECT * FROM user";
-    private static final String ADD_USER_QUERY = "INSERT INTO user";
+public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
@@ -21,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
         Connection connection = SQLConnectionUtil.getConnection();
         Statement statement = SQLConnectionUtil.createStatement(connection);
         String whereCondition = createWhereCondition(login, password);
-        ResultSet resultSet = SQLConnectionUtil.executeQuery(statement, FIND_USER_QUERY + whereCondition);
+        ResultSet resultSet = SQLConnectionUtil.executeQuery(statement, SELECT_ALL_FROM_USER_QUERY + whereCondition);
         try {
             if(resultSet.next()) {
                 user.setLogin(resultSet.getString(2));
@@ -31,10 +33,10 @@ public class UserDAOImpl implements UserDAO {
                 user.setEmail(resultSet.getString(6));
                 user.setAge(resultSet.getInt(7));
             } else {
-                throw new DAOException("No matches in database");
+                throw new DAOException(NO_MATCHES_IN_DATABASE_MESSAGE);
             }
         } catch (SQLException e) {
-            throw new DAOException("Cannot create entity, database exception.");
+            throw new DAOException(CANNOT_CREATE_ENTITY_MESSAGE, e);
         }
         SQLConnectionUtil.closeConnection(connection);
         return user;
@@ -54,7 +56,7 @@ public class UserDAOImpl implements UserDAO {
         Connection connection = SQLConnectionUtil.getConnection();
         Statement statement = SQLConnectionUtil.createStatement(connection);
         String valuesCondition = createValuesCondition(login, password, firstName, lastName, email, age);
-        SQLConnectionUtil.executeUpdate(statement, ADD_USER_QUERY + valuesCondition);
+        SQLConnectionUtil.executeUpdate(statement, INSERT_INTO_USER_QUERY + valuesCondition);
         SQLConnectionUtil.closeConnection(connection);
     }
 

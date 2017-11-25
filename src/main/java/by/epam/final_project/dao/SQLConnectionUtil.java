@@ -4,8 +4,15 @@ import by.epam.final_project.exception.DAOException;
 
 import java.sql.*;
 
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_CONNECTION_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_STATEMENT_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_QUERY_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_UPDATE_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CLOSE_CONNECTION_MESSAGE;
+
 public class SQLConnectionUtil {
 
+    // TODO: 23.11.2017 use prop
     private static final String URL = "jdbc:mysql://localhost:3306/epamapplicationdb";
     private static final String ENCODING_CHARSET = "?useUnicode=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
@@ -13,14 +20,9 @@ public class SQLConnectionUtil {
 
     public static Connection getConnection() throws DAOException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new DAOException("Cannot found database driver.");
-        }
-        try {
             return DriverManager.getConnection(URL + ENCODING_CHARSET, LOGIN, PASSWORD);
         } catch (SQLException e) {
-            throw new DAOException("Cannot create connection.");
+            throw new DAOException(CANNOT_CREATE_CONNECTION_MESSAGE, e);
         }
     }
 
@@ -28,7 +30,7 @@ public class SQLConnectionUtil {
         try {
             return connection.createStatement();
         } catch (SQLException e) {
-            throw new DAOException("Cannot create statement.");
+            throw new DAOException(CANNOT_CREATE_STATEMENT_MESSAGE, e);
         }
     }
 
@@ -36,7 +38,7 @@ public class SQLConnectionUtil {
         try {
             return statement.executeQuery(query);
         } catch (SQLException e) {
-            throw new DAOException("Query exception.");
+            throw new DAOException(CANNOT_EXECUTE_QUERY_MESSAGE, e);
         }
     }
 
@@ -44,7 +46,7 @@ public class SQLConnectionUtil {
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            throw new DAOException("Update query exception.");
+            throw new DAOException(CANNOT_EXECUTE_UPDATE_MESSAGE, e);
         }
     }
 
@@ -52,7 +54,7 @@ public class SQLConnectionUtil {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new DAOException("Cannot close connection.");
+            throw new DAOException(CANNOT_CLOSE_CONNECTION_MESSAGE, e);
         }
     }
 

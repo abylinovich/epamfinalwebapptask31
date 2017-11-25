@@ -11,25 +11,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.epam.final_project.controller.command.message.FrontMessageUtil.CANNOT_REGISTER_USER_MESSAGE;
+import static by.epam.final_project.controller.command.message.PagePathUtil.ERROR_PAGE_PATH;
+import static by.epam.final_project.controller.command.message.PagePathUtil.LOGIN_PAGE_PATH;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.LOGIN_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.PASSWORD_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.FIRST_NAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.LAST_NAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.EMAIL_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.AGE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.ERROR_MESSAGE_PARAMETER_NAME;
+
 public class RegistrationCommand implements Command {
 
-    private UserService userService = UserServiceFactory.getUserService();
-    private static final String ERROR_MESSAGE = "Cannot register user. Please, restart page.";
+    private UserService userService = UserServiceFactory.getInstance().getUserService();
 
     @Override
     public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
-        String email = request.getParameter("email");
-        int age = Integer.parseInt(request.getParameter("age"));
+        String login = request.getParameter(LOGIN_PARAMETER_NAME);
+        String password = request.getParameter(PASSWORD_PARAMETER_NAME);
+        String firstName = request.getParameter(FIRST_NAME_PARAMETER_NAME);
+        String lastName = request.getParameter(LAST_NAME_PARAMETER_NAME);
+        String email = request.getParameter(EMAIL_PARAMETER_NAME);
+        int age = Integer.parseInt(request.getParameter(AGE_PARAMETER_NAME));
         try {
             userService.createNewUser(login, password, firstName, lastName, email, age);
-            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+            request.getRequestDispatcher(LOGIN_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
-            request.setAttribute("errorMessage", ERROR_MESSAGE);
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_REGISTER_USER_MESSAGE);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
         }
     }
 
