@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static by.epam.final_project.controller.command.message.FrontMessageUtil.CANNOT_LOGIN_MESSAGE;
+import static by.epam.final_project.controller.command.message.FrontMessageUtil.USER_NOT_FOUND_MESSAGE;
 import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.ERROR_MESSAGE_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.LOGIN_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.PASSWORD_PARAMETER_NAME;
@@ -20,18 +21,22 @@ import static by.epam.final_project.controller.command.message.PagePathUtil.HOME
 public class LoginCommand extends AbstractCommand {
 
     @Override
-    public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+    public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.process(servletContext, request, response);
         String login = request.getParameter(LOGIN_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         try {
             User user = userService.findUserByLoginAndPassword(login, password);
-            request.setAttribute(USER_PARAMETER_NAME, user);
-            request.getRequestDispatcher(HOME_PAGE_PATH).forward(request, response);
+            if(user != null) {
+                request.setAttribute(USER_PARAMETER_NAME, user);
+                request.getRequestDispatcher(HOME_PAGE_PATH).forward(request, response);
+            } else {
+                request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, USER_NOT_FOUND_MESSAGE);
+            }
         } catch (ServiceException e) {
             request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_LOGIN_MESSAGE);
-            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
         }
+        request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
     }
 
 }

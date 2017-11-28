@@ -9,6 +9,6 @@ public interface UserService {
 
     User findUserByLoginAndPassword(String login, String password) throws ServiceException;
 
-    void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException;
+    User createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException;
 
 }

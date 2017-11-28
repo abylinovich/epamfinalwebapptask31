@@ -12,24 +12,22 @@ import static by.epam.final_project.controller.command.message.HTTPParameterName
 public class CommandFactory {
 
     private static final CommandFactory commandFactory = new CommandFactory();
-    private static final Map<String, Command> commands = new HashMap<>();
-    static {
-        commands.put(LOGIN_PARAMETER_NAME, new LoginCommand());
-        commands.put(REGISTRATION_PARAMETER_NAME, new RegistrationCommand());
-    }
+    private final Map<String, Command> commands = new HashMap<>();
 
     private CommandFactory() {
+        commands.put(LOGIN_PARAMETER_NAME, new LoginCommand());
+        commands.put(REGISTRATION_PARAMETER_NAME, new RegistrationCommand());
     }
 
     public static CommandFactory getInstance() {
         return commandFactory;
     }
 
-    public static Map<String, Command> getCommands() {
+    public Map<String, Command> getCommands() {
         return commands;
     }
 
-    public static Command getCommand(String commandName) {
+    public Command getCommand(String commandName) {
         return commands.get(commandName);
     }
 
