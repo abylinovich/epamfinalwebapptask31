@@ -32,9 +32,8 @@ public class UserDAOImpl implements UserDAO {
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
         User user = new User();
         Connection connection = SQLConnectionUtil.getConnection();
-        Statement statement = SQLConnectionUtil.createStatement(connection);
         String whereCondition = createWhereCondition(login, password);
-        ResultSet resultSet = SQLConnectionUtil.executeQuery(statement, SELECT_ALL_FROM_USER_QUERY + whereCondition);
+        ResultSet resultSet = SQLConnectionUtil.executeQuery(connection, SELECT_ALL_FROM_USER_QUERY + whereCondition);
         try {
             if(resultSet.next()) {
                 user.setLogin(resultSet.getString(2));
@@ -65,9 +64,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws DAOException {
         Connection connection = SQLConnectionUtil.getConnection();
-        Statement statement = SQLConnectionUtil.createStatement(connection);
         String valuesCondition = createValuesCondition(login, password, firstName, lastName, email, age);
-        SQLConnectionUtil.executeUpdate(statement, INSERT_INTO_USER_QUERY + valuesCondition);
+        SQLConnectionUtil.executeUpdate(connection, INSERT_INTO_USER_QUERY + valuesCondition);
         SQLConnectionUtil.closeConnection(connection);
     }
 

@@ -27,24 +27,18 @@ public class SQLConnectionUtil {
         }
     }
 
-    public static Statement createStatement(Connection connection) throws DAOException {
+    public static ResultSet executeQuery(Connection connection, String query) throws DAOException {
         try {
-            return connection.createStatement();
-        } catch (SQLException e) {
-            throw new DAOException(CANNOT_CREATE_STATEMENT_MESSAGE, e);
-        }
-    }
-
-    public static ResultSet executeQuery(Statement statement, String query) throws DAOException {
-        try {
+            PreparedStatement statement = connection.prepareStatement(query);
             return statement.executeQuery(query);
         } catch (SQLException e) {
             throw new DAOException(CANNOT_EXECUTE_QUERY_MESSAGE, e);
         }
     }
 
-    public static void executeUpdate(Statement statement, String query) throws DAOException {
+    public static void executeUpdate(Connection connection, String query) throws DAOException {
         try {
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate(query);
         } catch (SQLException e) {
             throw new DAOException(CANNOT_EXECUTE_UPDATE_MESSAGE, e);
