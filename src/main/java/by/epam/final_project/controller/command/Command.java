@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public interface Command {
 
+    void init() throws ServletException;
+
     void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }

@@ -22,12 +22,11 @@ import static by.epam.final_project.controller.command.message.HTTPParameterName
 import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.AGE_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.ERROR_MESSAGE_PARAMETER_NAME;
 
-public class RegistrationCommand implements Command {
-
-    private UserService userService = UserServiceFactory.getInstance().getUserService();
+public class RegistrationCommand extends AbstractCommand {
 
     @Override
     public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.process(servletContext, request, response);
         String login = request.getParameter(LOGIN_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         String firstName = request.getParameter(FIRST_NAME_PARAMETER_NAME);

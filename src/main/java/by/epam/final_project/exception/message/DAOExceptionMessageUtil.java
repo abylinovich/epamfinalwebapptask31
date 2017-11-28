@@ -10,6 +10,7 @@ public class DAOExceptionMessageUtil {
     public static final String CANNOT_EXECUTE_UPDATE_MESSAGE = "Cannot execute update.";
     public static final String CANNOT_EXECUTE_QUERY_MESSAGE = "Cannot execute query.";
     public static final String DATABASE_DRIVER_LOAD_EXCEPTION_MESSAGE = "Cannot found database driver.";
+    public static final String CANNOT_INITIALIZE_DAO = "Cannot initialize DAO.";
 
     private DAOExceptionMessageUtil() {
     }

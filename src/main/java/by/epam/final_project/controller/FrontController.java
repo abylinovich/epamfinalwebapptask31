@@ -1,5 +1,6 @@
 package by.epam.final_project.controller;
 
+import by.epam.final_project.controller.command.Command;
 import by.epam.final_project.controller.command.CommandFactory;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,9 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
-        CommandFactory.getCommand(commandName).process(getServletContext(),request, response);
+        Command command = CommandFactory.getCommand(commandName);
+        command.init();
+        command.process(getServletContext(), request, response);
     }
 
 }

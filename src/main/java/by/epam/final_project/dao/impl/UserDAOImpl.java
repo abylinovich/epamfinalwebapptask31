@@ -10,12 +10,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static by.epam.final_project.dao.SQLConnectionUtil.DATABASE_DRIVER_CLASS_PATH;
 import static by.epam.final_project.dao.SQLQueryMessageUtil.SELECT_ALL_FROM_USER_QUERY;
 import static by.epam.final_project.dao.SQLQueryMessageUtil.INSERT_INTO_USER_QUERY;
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_ENTITY_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.DATABASE_DRIVER_LOAD_EXCEPTION_MESSAGE;
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.NO_MATCHES_IN_DATABASE_MESSAGE;
 
 public class UserDAOImpl implements UserDAO {
+
+    @Override
+    public void init() throws DAOException {
+        try {
+            Class.forName(DATABASE_DRIVER_CLASS_PATH);
+        } catch (ClassNotFoundException e) {
+            throw new DAOException(DATABASE_DRIVER_LOAD_EXCEPTION_MESSAGE, e);
+        }
+    }
 
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {

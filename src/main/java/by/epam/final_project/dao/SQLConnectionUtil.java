@@ -17,6 +17,7 @@ public class SQLConnectionUtil {
     private static final String ENCODING_CHARSET = "?useUnicode=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "rootroot";
+    public static final String DATABASE_DRIVER_CLASS_PATH = "com.mysql.jdbc.Driver";
 
     public static Connection getConnection() throws DAOException {
         try {

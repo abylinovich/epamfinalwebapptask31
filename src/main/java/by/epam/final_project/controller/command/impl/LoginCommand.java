@@ -1,9 +1,7 @@
 package by.epam.final_project.controller.command.impl;
 
-import by.epam.final_project.controller.command.Command;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.exception.ServiceException;
-import by.epam.final_project.service.UserServiceFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -19,16 +17,15 @@ import static by.epam.final_project.controller.command.message.HTTPParameterName
 import static by.epam.final_project.controller.command.message.PagePathUtil.ERROR_PAGE_PATH;
 import static by.epam.final_project.controller.command.message.PagePathUtil.HOME_PAGE_PATH;
 
-public class LoginCommand implements Command {
-
-    private UserServiceFactory userServiceFactory = UserServiceFactory.getInstance();
+public class LoginCommand extends AbstractCommand {
 
     @Override
     public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+        super.process(servletContext, request, response);
         String login = request.getParameter(LOGIN_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         try {
-            User user = userServiceFactory.getUserService().findUserByLoginAndPassword(login, password);
+            User user = userService.findUserByLoginAndPassword(login, password);
             request.setAttribute(USER_PARAMETER_NAME, user);
             request.getRequestDispatcher(HOME_PAGE_PATH).forward(request, response);
         } catch (ServiceException e) {
