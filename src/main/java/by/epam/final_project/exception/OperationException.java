@@ -2,6 +2,8 @@ package by.epam.final_project.exception;
 
 public class OperationException extends Exception {
 
+    private static final long serialVersionUID = 2880920176828117512L;
+
     public OperationException() {
         super();
     }

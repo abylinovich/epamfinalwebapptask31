@@ -13,6 +13,8 @@ import static by.epam.final_project.controller.command.message.HTTPParameterName
 
 public class FrontController extends HttpServlet {
 
+    private static final long serialVersionUID = -1131956170161219954L;
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
