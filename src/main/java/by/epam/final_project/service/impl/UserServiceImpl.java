@@ -29,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws ServiceException {
+        if(!userValidator.validateLogin(login) || !userValidator.validatePassword(password)) {
+            return null;
+        }
         try {
             return userDAO.findUserByLoginAndPassword(login, password);
         } catch (DAOException e) {
@@ -38,6 +41,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException {
+        if(!userValidator.validateLogin(login) || !userValidator.validatePassword(password)) {
+            return null;
+        }
+        if(!userValidator.validateFirstName(firstName) ||
+                !userValidator.validateLastName(lastName) ||
+                !userValidator.validateEmail(email) ||
+                !userValidator.validateAge(age)) {
+            return null;
+        }
         try {
             userDAO.createNewUser(login, password, firstName, lastName, email, age);
             return findUserByLoginAndPassword(login, password);
