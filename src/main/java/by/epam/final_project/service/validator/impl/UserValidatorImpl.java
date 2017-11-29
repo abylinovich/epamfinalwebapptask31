@@ -2,53 +2,88 @@ package by.epam.final_project.service.validator.impl;
 
 import by.epam.final_project.service.validator.UserValidatorTemplate;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserValidatorImpl extends UserValidatorTemplate {
 
-    Pattern loginPattern = Pattern.compile("[a-zA-Z0-9_-]+");
+    private static final String LOGIN_PASSWORD_REGEX = "\\w+";
+    private static final String NAME_REGEX_EN = "[a-zA-Z]+";
+    private static final String NAME_REGEX_RU = "[а-яА-Я]+";
+    private static final String EMAIL_REGEX = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}";
+
+    private Pattern loginPasswordPattern = Pattern.compile(LOGIN_PASSWORD_REGEX);
+    private Pattern nameRuPattern = Pattern.compile(NAME_REGEX_RU);
+    private Pattern nameEnPattern = Pattern.compile(NAME_REGEX_EN);
+    private Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
 
     @Override
     public boolean validateLogin(String login) {
-        if(login == null) {
+        if(checkForNullAndEmpty(login)) {
             return false;
         }
-        if(login.isEmpty()) {
+        if(!loginPasswordPattern.matcher(login).matches()) {
             return false;
         }
-        // TODO: 28.11.2017
         return true;
     }
 
     @Override
     public boolean validatePassword(String password) {
-        // TODO: 28.11.2017
+        if(checkForNullAndEmpty(password)) {
+            return false;
+        }
+        if(!loginPasswordPattern.matcher(password).matches()) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean validateFirstName(String firstName) {
-        // TODO: 28.11.2017
+        if(checkForNullAndEmpty(firstName)) {
+            return false;
+        }
+        if(!nameEnPattern.matcher(firstName).matches() || !nameRuPattern.matcher(firstName).matches()) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean validateLastName(String lastName) {
-        // TODO: 28.11.2017
+        if(checkForNullAndEmpty(lastName)) {
+            return false;
+        }
+        if(!nameEnPattern.matcher(lastName).matches() || !nameRuPattern.matcher(lastName).matches()) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean validateEmail(String email) {
-        // TODO: 28.11.2017
+        if(checkForNullAndEmpty(email)) {
+            return false;
+        }
+        if(!emailPattern.matcher(email).matches()) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public boolean validateAge(int age) {
-        // TODO: 28.11.2017
+        if(age < 0 || age > 100) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean checkForNullAndEmpty(String input) {
+        if(input == null || input.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
 }
