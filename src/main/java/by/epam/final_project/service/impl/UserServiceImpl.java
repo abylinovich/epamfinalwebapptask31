@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException {
+        ///////////////////// попробуй разработать что-то более адекватное для валидации, этот код ужасно и смотрится и читается
+        // да и использовать так валидацию не очень хочется
         if(!userValidator.validateLogin(login) || !userValidator.validatePassword(password)) {
             return null;
         }
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserService {
                 !userValidator.validateAge(age)) {
             return null;
         }
+        ////////////////////
         try {
             userDAO.createNewUser(login, password, firstName, lastName, email, age);
             return findUserByLoginAndPassword(login, password);

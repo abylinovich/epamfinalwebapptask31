@@ -22,7 +22,8 @@ public class LoginCommand extends AbstractCommand {
 
     @Override
     public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.process(servletContext, request, response);
+        super.process(servletContext, request, response);// а зачем каждый раз проверять инициализацию сервлета
+        // что и делает твой базовый метод
         String login = request.getParameter(LOGIN_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         try {
@@ -34,7 +35,7 @@ public class LoginCommand extends AbstractCommand {
                 request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, USER_NOT_FOUND_MESSAGE);
             }
         } catch (ServiceException e) {
-            request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_LOGIN_MESSAGE);
+            request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_LOGIN_MESSAGE);// а логгеры где?
         }
         request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
     }
