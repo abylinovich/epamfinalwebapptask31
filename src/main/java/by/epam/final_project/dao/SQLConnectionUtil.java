@@ -2,9 +2,10 @@ package by.epam.final_project.dao;
 
 import by.epam.final_project.exception.DAOException;
 
-import java.sql.*;
+import java.sql.*;// не импортируем через *
 
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_CONNECTION_MESSAGE;
+import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_CONNECTION_MESSAGE;// страшный импорт
+// возник как раз из-за неправильного понимание того, что надо именовать, а что нет
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_STATEMENT_MESSAGE;
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_QUERY_MESSAGE;
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_UPDATE_MESSAGE;
@@ -23,7 +24,8 @@ public class SQLConnectionUtil {// в условии задачи сказано
         try {
             return DriverManager.getConnection(URL + ENCODING_CHARSET, LOGIN, PASSWORD);
         } catch (SQLException e) {
-            throw new DAOException(CANNOT_CREATE_CONNECTION_MESSAGE, e);
+            throw new DAOException(CANNOT_CREATE_CONNECTION_MESSAGE, e);// сообщения для лгов и для исключение ЕДИНСТВЕННЫЕ, которые не надо именовать
+            // ну почисте уши, чтобы слышать ВСЕ, а не выборочно
         }
     }
 
