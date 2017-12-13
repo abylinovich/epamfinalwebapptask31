@@ -10,10 +10,10 @@ import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CA
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_UPDATE_MESSAGE;
 import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CLOSE_CONNECTION_MESSAGE;
 
-public class SQLConnectionUtil {
+public class SQLConnectionUtil {// в условии задачи сказано, что надо использовать свой собственный пул соединений, а не просто класс, выполняющий отдельные операции
 
     // TODO: 23.11.2017 use prop
-    private static final String URL = "jdbc:mysql://localhost:3306/epamapplicationdb";
+    private static final String URL = "jdbc:mysql://localhost:3306/epamapplicationdb";// эти данные следует читать из файла properties
     private static final String ENCODING_CHARSET = "?useUnicode=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "rootroot";
