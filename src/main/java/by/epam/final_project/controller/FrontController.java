@@ -39,9 +39,13 @@ public class FrontController extends HttpServlet {
         command.doPost(getServletContext(), request, response);
     }
 
-    private Command getCommand(HttpServletRequest request) {
+    private Command getCommand(HttpServletRequest request) throws ServletException {
         String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
-        return CommandResolver.getInstance().getCommand(commandName);
+        Command command = CommandResolver.getInstance().getCommand(commandName);
+        if(command == null) {
+            throw new ServletException("No such command found.");
+        }
+        return command;
     }
 
 }

@@ -4,7 +4,12 @@ public class HTTPParameterNameUtil {
 
     public static final String COMMAND_PARAMETER_NAME = "command";
     public static final String LOGIN_PARAMETER_NAME = "login";
-    public static final String REGISTRATION_PARAMETER_NAME = "registration";
+    public static final String REGISTER_PARAMETER_NAME = "register";
+    public static final String CHANGE_LANGUAGE_PARAMETER_NAME = "changeLang";
+
+    public static final String LANGUAGE_PARAMETER_NAME = "language";
+    public static final String URL_PARAMETER_NAME = "url";
+
     public static final String USER_PARAMETER_NAME = "user";
     public static final String PASSWORD_PARAMETER_NAME = "password";
     public static final String FIRST_NAME_PARAMETER_NAME = "firstname";
