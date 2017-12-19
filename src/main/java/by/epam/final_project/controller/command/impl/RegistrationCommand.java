@@ -1,7 +1,7 @@
 package by.epam.final_project.controller.command.impl;
 
 import by.epam.final_project.entity.User;
-import by.epam.final_project.exception.ServiceException;
+import by.epam.final_project.service.exception.ServiceException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,8 +18,12 @@ import static by.epam.final_project.controller.command.message.PagePathUtil.HOME
 public class RegistrationCommand extends AbstractCommand {
 
     @Override
-    public void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.process(servletContext, request, response);
+    public void doGet(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        throw new ServletException("Method GET is not supported.");
+    }
+
+    @Override
+    public void doPost(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter(LOGIN_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         String firstName = request.getParameter(FIRST_NAME_PARAMETER_NAME);

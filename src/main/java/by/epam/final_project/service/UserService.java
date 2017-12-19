@@ -1,11 +1,9 @@
 package by.epam.final_project.service;
 
 import by.epam.final_project.entity.User;
-import by.epam.final_project.exception.ServiceException;
+import by.epam.final_project.service.exception.ServiceException;
 
 public interface UserService {
-
-    void init() throws ServiceException;
 
     User findUserByLoginAndPassword(String login, String password) throws ServiceException;
 

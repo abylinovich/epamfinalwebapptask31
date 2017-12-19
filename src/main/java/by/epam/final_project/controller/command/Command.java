@@ -10,6 +10,8 @@ public interface Command {
 
     void init() throws ServletException;
 
-    void process(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void doGet(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+    void doPost(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }

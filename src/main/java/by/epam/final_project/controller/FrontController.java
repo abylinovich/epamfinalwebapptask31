@@ -1,7 +1,9 @@
 package by.epam.final_project.controller;
 
 import by.epam.final_project.controller.command.Command;
-import by.epam.final_project.controller.command.CommandFactory;
+import by.epam.final_project.controller.command.CommandResolver;
+import by.epam.final_project.dao.connectionpool.ConnectionPoolFactory;
+import by.epam.final_project.dao.exception.ConnectionPoolException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +17,31 @@ public class FrontController extends HttpServlet {
 
     private static final long serialVersionUID = -1131956170161219954L;
 
+
+    @Override
+    public void init() throws ServletException {
+        try {
+            ConnectionPoolFactory.getInstance().init();
+        } catch (ConnectionPoolException e) {
+            throw new ServletException("Initialization exception. Cannot initialize connection pool.", e);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Command command = getCommand(request);
+        command.doGet(getServletContext(), request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Command command = getCommand(request);
+        command.doPost(getServletContext(), request, response);
+    }
+
+    private Command getCommand(HttpServletRequest request) {
         String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
-        Command command = CommandFactory.getInstance().getCommand(commandName);
-        command.init();
-        command.process(getServletContext(), request, response);
+        return CommandResolver.getInstance().getCommand(commandName);
     }
 
 }

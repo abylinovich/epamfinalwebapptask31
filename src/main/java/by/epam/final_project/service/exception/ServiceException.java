@@ -1,4 +1,6 @@
-package by.epam.final_project.exception;
+package by.epam.final_project.service.exception;
+
+import by.epam.final_project.exception.OperationException;
 
 public class ServiceException extends OperationException {
 

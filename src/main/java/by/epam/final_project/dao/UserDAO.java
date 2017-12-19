@@ -1,11 +1,9 @@
 package by.epam.final_project.dao;
 
 import by.epam.final_project.entity.User;
-import by.epam.final_project.exception.DAOException;
+import by.epam.final_project.dao.exception.DAOException;
 
 public interface UserDAO {
-
-    void init() throws DAOException;
 
     User findUserByLoginAndPassword(String login, String password) throws DAOException;
 

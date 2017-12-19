@@ -1,14 +1,8 @@
 package by.epam.final_project.dao;
 
-import by.epam.final_project.exception.DAOException;
+import by.epam.final_project.dao.exception.DAOException;
 
 import java.sql.*;
-
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_CONNECTION_MESSAGE;
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CREATE_STATEMENT_MESSAGE;
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_QUERY_MESSAGE;
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_EXECUTE_UPDATE_MESSAGE;
-import static by.epam.final_project.exception.message.DAOExceptionMessageUtil.CANNOT_CLOSE_CONNECTION_MESSAGE;
 
 public class SQLConnectionUtil {
 
@@ -23,7 +17,7 @@ public class SQLConnectionUtil {
         try {
             return DriverManager.getConnection(URL + ENCODING_CHARSET, LOGIN, PASSWORD);
         } catch (SQLException e) {
-            throw new DAOException(CANNOT_CREATE_CONNECTION_MESSAGE, e);
+            throw new DAOException("Cannot create connection.", e);
         }
     }
 
@@ -32,7 +26,7 @@ public class SQLConnectionUtil {
             PreparedStatement statement = connection.prepareStatement(query);
             return statement.executeQuery(query);
         } catch (SQLException e) {
-            throw new DAOException(CANNOT_EXECUTE_QUERY_MESSAGE, e);
+            throw new DAOException("Cannot execute query.", e);
         }
     }
 
@@ -41,7 +35,7 @@ public class SQLConnectionUtil {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            throw new DAOException(CANNOT_EXECUTE_UPDATE_MESSAGE, e);
+            throw new DAOException("Cannot execute update.", e);
         }
     }
 
@@ -49,7 +43,7 @@ public class SQLConnectionUtil {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new DAOException(CANNOT_CLOSE_CONNECTION_MESSAGE, e);
+            throw new DAOException("Cannot close connection.", e);
         }
     }
 
