@@ -8,19 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.LANGUAGE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.URL_PARAMETER_NAME;
+
 
 public class ChangeLanguageCommand extends AbstractCommand {
 
     private final static Logger logger = Logger.getLogger(ChangeLanguageCommand.class);
 
-    private final static String REQUEST_LANGUAGE_PARAMETER = "language";
 
     @Override
     public void doGet(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String language = request.getParameter(REQUEST_LANGUAGE_PARAMETER);
-        request.getSession().setAttribute("language", language);
-        String url = request.getParameter("url");
+        String language = request.getParameter(LANGUAGE_PARAMETER_NAME);
+        request.getSession().setAttribute(LANGUAGE_PARAMETER_NAME, language);
+        String url = request.getParameter(URL_PARAMETER_NAME);
         response.sendRedirect(url);
+        logger.debug("Change language to '" + language + "'.");
     }
 
     @Override

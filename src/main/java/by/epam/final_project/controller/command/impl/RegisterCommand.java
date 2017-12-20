@@ -17,9 +17,9 @@ import static by.epam.final_project.controller.command.message.PagePathUtil.ERRO
 import static by.epam.final_project.controller.command.message.PagePathUtil.HOME_PAGE_PATH;
 import static by.epam.final_project.controller.command.message.PagePathUtil.REGISTER_PAGE_PATH;
 
-public class RegistrationCommand extends AbstractCommand {
+public class RegisterCommand extends AbstractCommand {
 
-    private final static Logger logger = Logger.getLogger(RegistrationCommand.class);
+    private final static Logger logger = Logger.getLogger(RegisterCommand.class);
 
     @Override
     public void doGet(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
