@@ -1,34 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${not empty sessionScope.language ? sessionScope.language : sessionScope.locale}" scope="session" />
-<c:set var="bundle" value="Logout" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="${bundle}" />
 
-<div class="container-fluid">
-    <div class="row content">
-        <div class="col-sm-2">
-            <section id="content">
-                <form action="">
-                    <div>
-                        <input type="submit" value="Back home">
-                    </div>
-                </form>
-            </section>
-        </div>
+<fmt:setBundle basename="Logout" var="logoutBundle" scope="session" />
 
-        <div class="col-sm-8">
-        </div>
-
-        <div class="col-sm-2">
-            <section id="content">
-                <form action="">
-                    <div>
-                        <input type="submit" value="Log out">
-                    </div>
-                </form>
-            </section>
-        </div>
+<c:if test="${not empty user}">
+    <div class="btn-group-vertical">
+        <a class="btn button-lang" href="/action?command=home"><fmt:message key="home" bundle="${logoutBundle}" /></a>
+        <a class="btn button-lang" href="/action?command=logout"><fmt:message key="logout" bundle="${logoutBundle}" /></a>
     </div>
-</div>
+</c:if>

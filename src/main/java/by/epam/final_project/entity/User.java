@@ -1,28 +1,39 @@
 package by.epam.final_project.entity;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 
 public class User implements Serializable {
 
     private static final long serialVersionUID = 7236815861267972605L;
 
-    private String login;
+    private UserRole role;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String email;
     private int age;
+    private Locale locale;
 
     public User() {
     }
 
-    public String getLogin() {
-        return login;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -65,34 +76,45 @@ public class User implements Serializable {
         this.age = age;
     }
 
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return age == user.age &&
-                Objects.equals(login, user.login) &&
+                role == user.role &&
+                Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email);
+                Objects.equals(email, user.email) &&
+                Objects.equals(locale, user.locale);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, firstName, lastName, email, age);
+        return Objects.hash(role, username, password, firstName, lastName, email, age, locale);
     }
 
     @Override
     public String toString() {
-
         return "User{" +
-                "login='" + login + '\'' +
+                "role=" + role +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", locale=" + locale +
                 '}';
     }
 

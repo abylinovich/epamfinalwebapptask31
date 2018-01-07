@@ -9,6 +9,7 @@ $(document).ready(function () {
         INPUT_LAST_NAME: '.jsLastName',
         INPUT_EMAIL: '.jsEmail',
         INPUT_AGE: '.jsAge',
+        INPUT_USER_LOCALE: '.jsUserLocale',
 
         NOTIFICATION_USERNAME_ERROR: '.jsUsernameError',
         NOTIFICATION_PASSWORD_ERROR: '.jsPasswordError',
@@ -17,6 +18,7 @@ $(document).ready(function () {
         NOTIFICATION_LAST_NAME_ERROR: '.jsLastNameError',
         NOTIFICATION_EMAIL_ERROR: '.jsEmailError',
         NOTIFICATION_AGE_ERROR: '.jsAgeError',
+        NOTIFICATION_USER_LOCALE_ERROR: '.jsUserLocaleError',
         NOTIFICATION_SUBMIT_ERROR: '.jsSubmitError'
         };
 
@@ -29,6 +31,7 @@ $(document).ready(function () {
         $lastnameField = $(ELEMENTS.INPUT_LAST_NAME),
         $emailField = $(ELEMENTS.INPUT_EMAIL),
         $ageField = $(ELEMENTS.INPUT_AGE),
+        $userLocaleField = $(ELEMENTS.INPUT_USER_LOCALE),
 
         $usernameErrorNotification = $(ELEMENTS.NOTIFICATION_USERNAME_ERROR),
         $passwordErrorNotification = $(ELEMENTS.NOTIFICATION_PASSWORD_ERROR),
@@ -37,6 +40,7 @@ $(document).ready(function () {
         $lastnameErrorNotification = $(ELEMENTS.NOTIFICATION_LAST_NAME_ERROR),
         $emailErrorNotification = $(ELEMENTS.NOTIFICATION_EMAIL_ERROR),
         $ageErrorNotification = $(ELEMENTS.NOTIFICATION_AGE_ERROR),
+        $userLocaleErrorNotification = $(ELEMENTS.NOTIFICATION_USER_LOCALE_ERROR),
         $submitErrorNotification = $(ELEMENTS.NOTIFICATION_SUBMIT_ERROR)
         ;
 
@@ -89,16 +93,26 @@ $(document).ready(function () {
             ($ageErrorNotification.hide(), Validation.switchButtons([$submitButton], true));
     });
 
+    $userLocaleField.on('blur', function () {
+        $submitErrorNotification.hide();
+        !Validation.validateOnEmpty([$userLocaleField]) ?
+            ($userLocaleErrorNotification.show(), Validation.switchButtons([$submitButton], false)) :
+            ($userLocaleErrorNotification.hide(), Validation.switchButtons([$submitButton], true));
+    });
+
     $submitButton.click(function (event) {
         event.stopPropagation();
 
-        if(!Validation.validateOnEmpty([$usernameField,
+        if(!Validation.validateOnEmpty([
+                $usernameField,
                 $passwordField,
                 $passwordRepeatField,
                 $firstnameField,
                 $lastnameField,
                 $emailField,
-                $ageField])) {
+                $ageField,
+                $userLocaleField
+            ])) {
 
             $submitErrorNotification.show();
             Validation.switchButtons([$submitButton], false);

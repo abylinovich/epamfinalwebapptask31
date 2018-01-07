@@ -1,6 +1,13 @@
 package by.epam.final_project.service.validator;
 
+import by.epam.final_project.entity.User;
+
 public class UserValidatorTemplate implements UserValidator {
+
+    @Override
+    public boolean validateUser(User user) {
+        return true;
+    }
 
     @Override
     public boolean validateLogin(String login) {
@@ -12,23 +19,4 @@ public class UserValidatorTemplate implements UserValidator {
         return true;
     }
 
-    @Override
-    public boolean validateFirstName(String firstName) {
-        return true;
-    }
-
-    @Override
-    public boolean validateLastName(String lastName) {
-        return true;
-    }
-
-    @Override
-    public boolean validateEmail(String email) {
-        return true;
-    }
-
-    @Override
-    public boolean validateAge(int age) {
-        return true;
-    }
 }

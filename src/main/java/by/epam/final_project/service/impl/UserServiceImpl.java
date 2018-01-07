@@ -19,36 +19,32 @@ public class UserServiceImpl implements UserService {
     private UserValidator userValidator = UserValidatorFactory.getInstance().getUserValidator();
 
     @Override
-    public User findUserByLoginAndPassword(String login, String password) throws ServiceException {
+    public User findUser(String login, String password) throws ServiceException {
         if(!userValidator.validateLogin(login) || !userValidator.validatePassword(password)) {
-            logger.debug("Validation error.");
-            throw new ServiceException("Validation error");
+            throw new ServiceException("Validation failed.");
         }
         try {
-            return userDAO.findUserByLoginAndPassword(login, password);
+            return userDAO.findUser(login, password);
         } catch (DAOException e) {
-            logger.error("Cannot find user.", e);
             throw new ServiceException("Cannot find user.", e);
         }
     }
 
     @Override
-    public User createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws ServiceException {
-        if(!userValidator.validateLogin(login) || !userValidator.validatePassword(password)) {
-            return null;
-        }
-        if(!userValidator.validateFirstName(firstName) ||
-                !userValidator.validateLastName(lastName) ||
-                !userValidator.validateEmail(email) ||
-                !userValidator.validateAge(age)) {
-            return null;
+    public void register(User user) throws ServiceException {
+        if(!userValidator.validateUser(user)) {
+            throw new ServiceException("User was not registered. Validation error.");
         }
         try {
-            userDAO.createNewUser(login, password, firstName, lastName, email, age);
-            return findUserByLoginAndPassword(login, password);
+            userDAO.register(user);
         } catch (DAOException e) {
             throw new ServiceException("Cannot create user.", e);
         }
+    }
+
+    @Override
+    public void resetPassword(User user) {
+        user.setPassword(null);
     }
 
 }

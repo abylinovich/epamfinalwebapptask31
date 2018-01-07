@@ -5,8 +5,8 @@ import by.epam.final_project.dao.exception.DAOException;
 
 public interface UserDAO {
 
-    User findUserByLoginAndPassword(String login, String password) throws DAOException;
+    User findUser(String login, String password) throws DAOException;
 
-    void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws DAOException;
+    void register(User user) throws DAOException;
 
 }

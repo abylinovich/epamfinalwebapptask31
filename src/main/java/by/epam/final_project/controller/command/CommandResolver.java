@@ -1,15 +1,13 @@
 package by.epam.final_project.controller.command;
 
-import by.epam.final_project.controller.command.impl.ChangeLanguageCommand;
+import by.epam.final_project.controller.command.impl.HomeCommand;
 import by.epam.final_project.controller.command.impl.LoginCommand;
 import by.epam.final_project.controller.command.impl.RegisterCommand;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.CHANGE_LANGUAGE_PARAMETER_NAME;
-import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.LOGIN_PARAMETER_NAME;
-import static by.epam.final_project.controller.command.message.HTTPParameterNameUtil.REGISTER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
 
 public class CommandResolver {
 
@@ -19,7 +17,7 @@ public class CommandResolver {
     private CommandResolver() {
         commands.put(LOGIN_PARAMETER_NAME, new LoginCommand());
         commands.put(REGISTER_PARAMETER_NAME, new RegisterCommand());
-        commands.put(CHANGE_LANGUAGE_PARAMETER_NAME, new ChangeLanguageCommand());
+        commands.put(HOME_PARAMETER_NAME, new HomeCommand());
     }
 
     public static CommandResolver getInstance() {

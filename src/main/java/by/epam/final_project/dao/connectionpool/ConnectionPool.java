@@ -3,24 +3,21 @@ package by.epam.final_project.dao.connectionpool;
 import by.epam.final_project.dao.exception.ConnectionPoolException;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
-class ConnectionPool {
+public class ConnectionPool {
 
-    private Logger logger = Logger.getLogger(ConnectionPool.class.getSimpleName());
+    private Logger logger = Logger.getLogger(ConnectionPool.class);
 
-    private static final String PROPERTIES_FILE_NAME = "environment/prop_local.properties";
-    private static final String DATABASE_DRIVER_PROPERTY_KEY = "dataBase.driverClassName";
-    private static final String DATABASE_URL_PROPERTY_KEY = "dataBase.url";
-    private static final String DATABASE_POOL_CAPACITY_PROPERTY_KEY = "dataBase.poolCapacity";
-    private static final String DATABASE_USERNAME_PROPERTY_KEY = "dataBase.username";
-    private static final String DATABASE_PASSWORD_PROPERTY_KEY = "dataBase.password";
+    private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DATABASE_DOMAIN = "DOMAIN_NAME";
+    private static final String DATABASE_PORT = "DATABASE_PORT";
+    private static final String DATABASE_NAME = "OUT_OF_MEMORY_PROJECT_DATABASE";
+    private static final String DATABASE_LOGIN = "MYSQL_LOGIN";
+    private static final String DATABASE_PASSWORD = "MYSQL_PASSWORD";
+    private static final int DATABASE_CONNECTION_POOL_CAPACITY = 5;
 
 
     private final Set<Connection> availableConnections = new HashSet<>();
@@ -30,31 +27,31 @@ class ConnectionPool {
     private String password;
     private int capacity;
 
-    ConnectionPool() {
+    private static volatile ConnectionPool connectionPool = new ConnectionPool();
+
+    public static ConnectionPool getConnectionPool() {
+        return connectionPool;
     }
 
-    void init()  throws ConnectionPoolException {
-        Properties properties = new Properties();
+    public void init() throws ConnectionPoolException {
+        String domain = System.getenv(DATABASE_DOMAIN);
+        String port = System.getenv(DATABASE_PORT);
+        String name = System.getenv(DATABASE_NAME);
+
+        url = "jdbc:mysql://" + domain + ":" + port + "/" + name;
+        username = System.getenv(DATABASE_LOGIN);
+        password = System.getenv(DATABASE_PASSWORD);
+        capacity = DATABASE_CONNECTION_POOL_CAPACITY;
+
         try {
-            properties.load(getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE_NAME));
-        } catch (IOException e) {
-            throw new ConnectionPoolException("Cannot read properties file: '" + PROPERTIES_FILE_NAME + "'.");
-        }
-        url = properties.getProperty(DATABASE_URL_PROPERTY_KEY);
-        capacity = Integer.valueOf(properties.getProperty(DATABASE_POOL_CAPACITY_PROPERTY_KEY));
-        username = properties.getProperty(DATABASE_USERNAME_PROPERTY_KEY);
-        password = properties.getProperty(DATABASE_PASSWORD_PROPERTY_KEY);
-        String driver = properties.getProperty(DATABASE_DRIVER_PROPERTY_KEY);
-        try {
-            Class.forName(driver);
+            Class.forName(DATABASE_DRIVER);
         } catch (ClassNotFoundException e) {
-            logger.error("Database driver class not found.", e);
-            throw new ConnectionPoolException("Cannot load driver.", e);
+            throw new ConnectionPoolException("Cannot load driver. Class not found.", e);
         }
-        logger.info("Connection pool initialization complete. URL='" + url + "', username='" + username + "', capacity='" + capacity + "'.");
+        logger.info("Connection pool initialization successful. URL='" + url + "', username='" + username + "', capacity='" + capacity + "'.");
     }
 
-    public synchronized Connection getConnection() throws ConnectionPoolException {
+    public Connection getConnection() throws ConnectionPoolException {
         Connection connection;
         if(availableConnections.size() > 0) {
             connection = availableConnections.iterator().next();
@@ -71,7 +68,16 @@ class ConnectionPool {
         return connection;
     }
 
-    public synchronized void close(Connection connection) throws ConnectionPoolException {
+    public void close(Connection connection) throws ConnectionPoolException {
+        close(connection, null, null);
+    }
+
+    public void close(Connection connection, Statement statement) throws ConnectionPoolException {
+        close(connection, statement, null);
+    }
+
+    public void close(Connection connection, Statement statement, ResultSet resultSet) throws ConnectionPoolException {
+        // TODO: 04.01.2018
         if (connection == null) {
             throw new ConnectionPoolException("Connection is null");
         }

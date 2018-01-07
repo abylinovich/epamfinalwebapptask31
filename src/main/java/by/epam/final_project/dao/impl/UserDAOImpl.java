@@ -1,72 +1,102 @@
 package by.epam.final_project.dao.impl;
 
-import by.epam.final_project.dao.SQLConnectionUtil;
 import by.epam.final_project.dao.UserDAO;
+import by.epam.final_project.dao.connectionpool.ConnectionPool;
+import by.epam.final_project.dao.constant.DatabaseTableInfo;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.dao.exception.DAOException;
+import by.epam.final_project.entity.UserRole;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Locale;
 
 public class UserDAOImpl implements UserDAO {
 
 
+    private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
+
+    private ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+
+    private String REGISTER_USER_QUERY =
+            "INSERT INTO users (role, username, password, first_name, last_name, email, locale_id) " +
+            "VALUES (?, ?, MD5(?), ?, ?, ?, (SELECT locale_id FROM locales l WHERE l.language = ?))";
+    private String FIND_USER_QUERY =
+            "SELECT u.role, u.username, u.first_name, u.last_name, u.email, l.language, l.country " +
+                    "FROM users u " +
+                    "JOIN locales l ON u.locale_id = l.locale_id " +
+                    "WHERE u.username = ? AND u.password = MD5(?)";
+//    private String CHECK_USER_QUERY = "SELECT * FROM mpb.user WHERE mpb.user.user_name = ?";
+//    private String CHECK_PASSWORD_QUERY = "SELECT  mpb.user.user_id FROM mpb.user WHERE mpb.user.user_name = ? " +
+//            "AND mpb.user.user_password = MD5(?)";
+//    private String CHECK_EMAIL_QUERY = "SELECT mpb.user.user_id FROM mpb.user WHERE mpb.user.user_email = ?";
+
     @Override
-    public User findUserByLoginAndPassword(String login, String password) throws DAOException {
-        User user = new User();
-        Connection connection = SQLConnectionUtil.getConnection();
-        String whereCondition = createWhereCondition(login, password);
-        ResultSet resultSet = SQLConnectionUtil.executeQuery(connection, "SELECT * FROM user" + whereCondition);
+    public User findUser(String login, String password) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        User user = null;
         try {
-            if(resultSet.next()) {
-                user.setLogin(resultSet.getString(2));
-                user.setPassword(resultSet.getString(3));
-                user.setFirstName(resultSet.getString(4));
-                user.setLastName(resultSet.getString(5));
-                user.setEmail(resultSet.getString(6));
-                user.setAge(resultSet.getInt(7));
-            } else {
-                throw new DAOException("No matches in database");
+            connection = connectionPool.getConnection();
+
+            statement = connection.prepareStatement(FIND_USER_QUERY);
+
+            statement.setString(1, login);
+            statement.setString(2, password);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User();
+                String role = resultSet.getString(DatabaseTableInfo.USERS_ROLE);
+                user.setRole(UserRole.valueOf(role.toUpperCase()));
+                String username = resultSet.getString(DatabaseTableInfo.USERS_USERNAME);
+                user.setUsername(username);
+                String firstName = resultSet.getString(DatabaseTableInfo.USERS_FIRST_NAME);
+                user.setFirstName(firstName);
+                String lastName = resultSet.getString(DatabaseTableInfo.USERS_LAST_NAME);
+                user.setLastName(lastName);
+                String email = resultSet.getString(DatabaseTableInfo.USERS_EMAIL);
+                user.setEmail(email);
+                String language = resultSet.getString(DatabaseTableInfo.LOCALES_LANGUAGE);
+                String country = resultSet.getString(DatabaseTableInfo.LOCALES_COUNTRY);
+                user.setLocale(new Locale(language, country));
             }
+            return user;
+
         } catch (SQLException e) {
-            throw new DAOException("Cannot create entity", e);
+            throw new DAOException("Failed to login user", e);
+        } finally {
+            connectionPool.close(connection, statement, resultSet);
         }
-        SQLConnectionUtil.closeConnection(connection);
-        return user;
     }
 
-    private String createWhereCondition(String login, String password) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(
-                " WHERE login = '" + login + "'" +
-                " AND password = '" + password + "'"
-        );
-        return sb.toString();
-    }
+
 
     @Override
-    public void createNewUser(String login, String password, String firstName, String lastName, String email, int age) throws DAOException {
-        Connection connection = SQLConnectionUtil.getConnection();
-        String valuesCondition = createValuesCondition(login, password, firstName, lastName, email, age);
-        SQLConnectionUtil.executeUpdate(connection, "INSERT INTO user" + valuesCondition);
-        SQLConnectionUtil.closeConnection(connection);
-    }
+    public void register(User user) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connectionPool.getConnection();
 
-    private String createValuesCondition(String login, String password, String firstName, String lastName, String email, int age) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(
-                " (login, password, first_name, last_name, email, age)" +
-                " VALUES (" +
-                "'" + login + "'" +
-                ", '" + password + "'" +
-                ", '" + firstName + "'" +
-                ", '" + lastName + "'" +
-                ", '" + email + "'" +
-                ", " + age +
-                ")"
-        );
-        return sb.toString();
+            statement = connection.prepareStatement(REGISTER_USER_QUERY);
+            statement.setString(1, user.getRole().toString());
+            statement.setString(2, user.getUsername());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getFirstName());
+            statement.setString(5, user.getLastName());
+            statement.setString(6, user.getEmail());
+            statement.setString(7, user.getLocale().getLanguage());
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to register user", e);
+        } finally {
+            connectionPool.close(connection, statement);
+        }
     }
 
 }
