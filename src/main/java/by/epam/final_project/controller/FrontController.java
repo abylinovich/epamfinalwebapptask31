@@ -28,6 +28,7 @@ public class FrontController extends HttpServlet {
         } catch (ConnectionPoolException e) {
             throw new ServletException("Initialization exception. Cannot initialize connection pool.", e);
         }
+        logger.info("Servlet has been successfully initialized.");
     }
 
     @Override
@@ -40,6 +41,12 @@ public class FrontController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = getCommand(request);
         command.doPost(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool.getConnectionPool().destroy();
+        logger.info("Servlet has been successfully destroyed.");
     }
 
     private Command getCommand(HttpServletRequest request) throws ServletException {

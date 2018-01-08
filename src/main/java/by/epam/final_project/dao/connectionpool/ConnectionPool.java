@@ -3,9 +3,15 @@ package by.epam.final_project.dao.connectionpool;
 import by.epam.final_project.dao.exception.ConnectionPoolException;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 
 public class ConnectionPool {
 
@@ -20,12 +26,13 @@ public class ConnectionPool {
     private static final int DATABASE_CONNECTION_POOL_CAPACITY = 5;
 
 
-    private final Set<Connection> availableConnections = new HashSet<>();
-    private final Set<Connection> usedConnections = new HashSet<>();
     private String url;
     private String username;
     private String password;
     private int capacity;
+    private BlockingQueue<Connection> availableConnections;
+    private BlockingQueue<Connection> usedConnections;
+
 
     private static volatile ConnectionPool connectionPool = new ConnectionPool();
 
@@ -42,73 +49,96 @@ public class ConnectionPool {
         username = System.getenv(DATABASE_LOGIN);
         password = System.getenv(DATABASE_PASSWORD);
         capacity = DATABASE_CONNECTION_POOL_CAPACITY;
+        availableConnections = new LinkedBlockingQueue<>(capacity);
+        usedConnections = new LinkedBlockingQueue<>(capacity);
 
         try {
             Class.forName(DATABASE_DRIVER);
         } catch (ClassNotFoundException e) {
             throw new ConnectionPoolException("Cannot load driver. Class not found.", e);
         }
-        logger.info("Connection pool initialization successful. URL='" + url + "', username='" + username + "', capacity='" + capacity + "'.");
+
+        for(int i = 1; i <= capacity; i++) {
+            try {
+                Connection connection = DriverManager.getConnection(url, username, password);
+                availableConnections.put(connection);
+            } catch (InterruptedException e) {
+                throw new ConnectionPoolException("Cannot retrieve connection.", e);
+            } catch (SQLException e) {
+                throw new ConnectionPoolException("Cannot retrieve new connection to database", e);
+            }
+            logger.debug("New connection #" + i + " was created.");
+        }
+
+        logger.info("Connection pool has been successfully initialized.");
     }
 
     public Connection getConnection() throws ConnectionPoolException {
         Connection connection;
-        if(availableConnections.size() > 0) {
-            connection = availableConnections.iterator().next();
-            availableConnections.remove(connection);
-            usedConnections.add(connection);
-            return connection;
+        try {
+            connection = availableConnections.take();
+            usedConnections.put(connection);
+        } catch (InterruptedException e) {
+            throw new ConnectionPoolException("Cannot get connection.", e);
         }
-        if(usedConnections.size() == capacity) {
-            throw new ConnectionPoolException("Connection pool has no available connections.");
-        }
-        connection = retrieveConnection();
-        usedConnections.add(connection);
-        logger.debug("Connection is given to caller.");
+        logger.debug("Connection was given to caller.");
         return connection;
     }
 
-    public void close(Connection connection) throws ConnectionPoolException {
-        close(connection, null, null);
+    public void close(Connection connection, Statement statement, ResultSet resultSet) throws ConnectionPoolException {
+        if(resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                logger.error("Cannot close ResultSet.", e);
+            }
+        }
+        close(connection, statement);
     }
 
     public void close(Connection connection, Statement statement) throws ConnectionPoolException {
-        close(connection, statement, null);
+        if(statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                logger.error("Cannot close Statement.", e);
+            }
+        }
+        close(connection);
     }
 
-    public void close(Connection connection, Statement statement, ResultSet resultSet) throws ConnectionPoolException {
-        // TODO: 04.01.2018
+    public void close(Connection connection) throws ConnectionPoolException {
         if (connection == null) {
-            throw new ConnectionPoolException("Connection is null");
+            throw new ConnectionPoolException("Connection is null.");
         }
-        boolean isRemoved = usedConnections.remove(connection);
-        if(!isRemoved) {
-            throw new ConnectionPoolException("Current connection is not from this connection pool.");
+
+        boolean isOwnConnection = usedConnections.remove(connection);
+        if(!isOwnConnection) {
+            throw new ConnectionPoolException("Attempt to close strange connection.");
         }
-        if(availableConnections.size() <= (capacity / 2)) {
-            availableConnections.add(connection);
-            logger.debug("Connection returned into connection pool.");
-        } else {
+
+        try {
+            availableConnections.put(connection);
+        } catch (InterruptedException e) {
+            throw new ConnectionPoolException("Cannot return connection into connection pool.", e);
+        }
+        logger.debug("Connection was returned into connection pool successfully.");
+    }
+
+    public void destroy() {
+        closeConnections(availableConnections);
+        closeConnections(usedConnections);
+        logger.info("Connection pool has been successfully destroyed.");
+    }
+
+    private void closeConnections(BlockingQueue<Connection> queue) {
+        for(Connection connection : queue) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("Connection wasn`t closed.");
-                throw new ConnectionPoolException("Exception due closing connection.");
+                logger.error("Cannot close connection.", e);
             }
-            logger.debug("Connection was closed.");
         }
-    }
-
-    private Connection retrieveConnection() throws ConnectionPoolException {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            logger.error("Cannot establish connection to database.", e);
-            throw new ConnectionPoolException("Cannot retrieve new connection to database");
-        }
-        logger.debug("New connection created.");
-        return conn;
     }
 
 }
