@@ -1,7 +1,7 @@
 package by.epam.final_project.service.impl;
 
 import by.epam.final_project.dao.UserDAO;
-import by.epam.final_project.dao.UserDAOFactory;
+import by.epam.final_project.dao.DAOFactory;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.dao.exception.DAOException;
 import by.epam.final_project.service.exception.ServiceException;
@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     private final static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
-    private UserDAO userDAO = UserDAOFactory.getInstance().getUserDAO();
+    private UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
     private UserValidator userValidator = UserValidatorFactory.getInstance().getUserValidator();
 
     @Override

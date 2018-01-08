@@ -4,7 +4,7 @@ import by.epam.final_project.controller.command.Command;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.entity.UserRole;
 import by.epam.final_project.service.UserService;
-import by.epam.final_project.service.UserServiceFactory;
+import by.epam.final_project.service.ServiceFactory;
 import by.epam.final_project.service.exception.ServiceException;
 import org.apache.log4j.Logger;
 
@@ -25,7 +25,7 @@ public class RegisterCommand implements Command {
 
     private final static Logger logger = Logger.getLogger(RegisterCommand.class);
 
-    private UserService userService = UserServiceFactory.getInstance().getUserService();
+    private UserService userService = ServiceFactory.getInstance().getUserService();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

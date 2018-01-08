@@ -12,14 +12,9 @@
 <body>
 
 <div class="container">
-    <section id="content">
-        <h1>User information</h1>
-        <h3>Login: ${requestScope.user.username}</h3>
-        <h3>Password: ${requestScope.user.password}</h3>
-        <h3>Age: ${requestScope.user.age}</h3>
-        <h3>First name: ${requestScope.user.firstName}</h3>
-        <h3>Last name: ${requestScope.user.lastName}</h3>
-        <h3>Email: ${requestScope.user.email}</h3>
+    <section id="content" style="width: 100%">
+        <jsp:include page="block/random_question.jsp" />
+        <%--<%@include file="block/random_question.jsp"%>--%>
     </section>
 </div>
 

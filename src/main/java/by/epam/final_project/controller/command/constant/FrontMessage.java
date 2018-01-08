@@ -8,6 +8,8 @@ public class FrontMessage {
     public static final String USER_NOT_FOUND_MESSAGE = "Cannot login. Input data is not valid.";
     public static final String SERVER_ERROR_MESSAGE = "Server is not working correctly." + TRY_AGAIN_MESSAGE;
 
+    public static final String RANDOM_QUESTION_NOT_FOUND_MESSAGE = "Random question was not found.";
+
     private FrontMessage() {
     }
 }

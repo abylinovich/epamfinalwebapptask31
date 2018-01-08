@@ -38,8 +38,7 @@ public class AuthenticationFilter implements Filter {
         if((uri.equals(LOGIN_PAGE_PATH) || uri.equals(REGISTER_PAGE_PATH)) ||
                 command == null ||
                 command.equals(LOGIN_PARAMETER_NAME) ||
-                command.equals(REGISTER_PARAMETER_NAME) ||
-                command.equals(CHANGE_LANGUAGE_PARAMETER_NAME)) {
+                command.equals(REGISTER_PARAMETER_NAME)) {
 
             logger.debug("Anonymous user location is login or register page. Next filter do.");
             filterChain.doFilter(servletRequest, servletResponse);

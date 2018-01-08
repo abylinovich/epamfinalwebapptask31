@@ -2,6 +2,7 @@ package by.epam.final_project.controller.command;
 
 import by.epam.final_project.controller.command.impl.HomeCommand;
 import by.epam.final_project.controller.command.impl.LoginCommand;
+import by.epam.final_project.controller.command.impl.LogoutCommand;
 import by.epam.final_project.controller.command.impl.RegisterCommand;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class CommandResolver {
         commands.put(LOGIN_PARAMETER_NAME, new LoginCommand());
         commands.put(REGISTER_PARAMETER_NAME, new RegisterCommand());
         commands.put(HOME_PARAMETER_NAME, new HomeCommand());
+        commands.put(LOGOUT_PARAMETER_NAME, new LogoutCommand());
     }
 
     public static CommandResolver getInstance() {

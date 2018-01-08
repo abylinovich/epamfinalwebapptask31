@@ -2,7 +2,7 @@ package by.epam.final_project.dao.impl;
 
 import by.epam.final_project.dao.UserDAO;
 import by.epam.final_project.dao.connectionpool.ConnectionPool;
-import by.epam.final_project.dao.constant.DatabaseTableInfo;
+import by.epam.final_project.dao.constant.DatabaseTable;
 import by.epam.final_project.entity.User;
 import by.epam.final_project.dao.exception.DAOException;
 import by.epam.final_project.entity.UserRole;
@@ -12,7 +12,6 @@ import java.sql.*;
 import java.util.Locale;
 
 public class UserDAOImpl implements UserDAO {
-
 
     private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
 
@@ -26,10 +25,6 @@ public class UserDAOImpl implements UserDAO {
                     "FROM users u " +
                     "JOIN locales l ON u.locale_id = l.locale_id " +
                     "WHERE u.username = ? AND u.password = MD5(?)";
-//    private String CHECK_USER_QUERY = "SELECT * FROM mpb.user WHERE mpb.user.user_name = ?";
-//    private String CHECK_PASSWORD_QUERY = "SELECT  mpb.user.user_id FROM mpb.user WHERE mpb.user.user_name = ? " +
-//            "AND mpb.user.user_password = MD5(?)";
-//    private String CHECK_EMAIL_QUERY = "SELECT mpb.user.user_id FROM mpb.user WHERE mpb.user.user_email = ?";
 
     @Override
     public User findUser(String login, String password) throws DAOException {
@@ -49,18 +44,18 @@ public class UserDAOImpl implements UserDAO {
 
             if (resultSet.next()) {
                 user = new User();
-                String role = resultSet.getString(DatabaseTableInfo.USERS_ROLE);
+                String role = resultSet.getString(DatabaseTable.Users.ROLE);
                 user.setRole(UserRole.valueOf(role.toUpperCase()));
-                String username = resultSet.getString(DatabaseTableInfo.USERS_USERNAME);
+                String username = resultSet.getString(DatabaseTable.Users.USERNAME);
                 user.setUsername(username);
-                String firstName = resultSet.getString(DatabaseTableInfo.USERS_FIRST_NAME);
+                String firstName = resultSet.getString(DatabaseTable.Users.FIRST_NAME);
                 user.setFirstName(firstName);
-                String lastName = resultSet.getString(DatabaseTableInfo.USERS_LAST_NAME);
+                String lastName = resultSet.getString(DatabaseTable.Users.LAST_NAME);
                 user.setLastName(lastName);
-                String email = resultSet.getString(DatabaseTableInfo.USERS_EMAIL);
+                String email = resultSet.getString(DatabaseTable.Users.EMAIL);
                 user.setEmail(email);
-                String language = resultSet.getString(DatabaseTableInfo.LOCALES_LANGUAGE);
-                String country = resultSet.getString(DatabaseTableInfo.LOCALES_COUNTRY);
+                String language = resultSet.getString(DatabaseTable.Locales.LANGUAGE);
+                String country = resultSet.getString(DatabaseTable.Locales.COUNTRY);
                 user.setLocale(new Locale(language, country));
             }
             return user;
