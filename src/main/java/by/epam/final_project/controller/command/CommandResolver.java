@@ -1,9 +1,6 @@
 package by.epam.final_project.controller.command;
 
-import by.epam.final_project.controller.command.impl.HomeCommand;
-import by.epam.final_project.controller.command.impl.LoginCommand;
-import by.epam.final_project.controller.command.impl.LogoutCommand;
-import by.epam.final_project.controller.command.impl.RegisterCommand;
+import by.epam.final_project.controller.command.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;

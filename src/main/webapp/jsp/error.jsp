@@ -13,7 +13,7 @@
 <body>
 <jsp:include page="/jsp/block/header.jsp"/>
 <div class="container">
-    <h2>${requestScope.errorMessage}</h2>
+    <h2>${param.errorMessage}</h2>
 </div>
 
 </body>

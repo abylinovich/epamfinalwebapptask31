@@ -17,7 +17,7 @@ public class DatabaseTable {
     }
 
     public class Users {
-        public static final String ID = "user_id";
+        public static final String USER_ID = "user_id";
         public static final String ROLE = "role";
         public static final String USERNAME = "username";
         public static final String PASSWORD = "password";

@@ -16,9 +16,7 @@ import java.io.IOException;
 import static by.epam.final_project.controller.command.constant.FrontMessage.CANNOT_LOGIN_MESSAGE;
 import static by.epam.final_project.controller.command.constant.FrontMessage.USER_NOT_FOUND_MESSAGE;
 import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
-import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
-import static by.epam.final_project.controller.command.constant.PagePath.HOME_PAGE_PATH;
-import static by.epam.final_project.controller.command.constant.PagePath.LOGIN_PAGE_PATH;
+import static by.epam.final_project.controller.command.constant.PagePath.*;
 
 public class LoginCommand implements Command {
 
@@ -42,7 +40,7 @@ public class LoginCommand implements Command {
                 HttpSession session = request.getSession(true);
                 session.setAttribute(USER_PARAMETER_NAME, user);
                 logger.debug("Login successful. Redirect to home page.");
-                response.sendRedirect(HOME_PAGE_PATH);
+                response.sendRedirect(HOME_PAGE_URL_PATTERN);
                 return;
             } else {
                 request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, USER_NOT_FOUND_MESSAGE);

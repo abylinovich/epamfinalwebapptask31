@@ -6,7 +6,6 @@
 <fmt:setLocale value="${language}" />
 
 <c:set var="user" value="${sessionScope.user}" scope="session" />
-<fmt:setLocale value="${language}" />
 
 
 <script src="../../resources/js/validation.js"></script>
@@ -18,15 +17,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2">
-                <%@include file="lang.jsp"%>
+                <%@include file="language-menu.jsp"%>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
+                <%@include file="question-menu.jsp"%>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
             </div>
             <div class="col-sm-2">
                 <%@include file="greetings.jsp"%>
             </div>
             <div class="col-sm-2">
-                <%@include file="logout.jsp"%>
+                <%@include file="logout-menu.jsp"%>
             </div>
         </div>
     </div>

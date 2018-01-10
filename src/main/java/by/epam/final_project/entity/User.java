@@ -8,6 +8,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 7236815861267972605L;
 
+    private int userId;
     private UserRole role;
     private String username;
     private String password;
@@ -18,6 +19,14 @@ public class User implements Serializable {
     private Locale locale;
 
     public User() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public UserRole getRole() {
@@ -89,7 +98,8 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age &&
+        return userId == user.userId &&
+                age == user.age &&
                 role == user.role &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
@@ -101,13 +111,14 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(role, username, password, firstName, lastName, email, age, locale);
+        return Objects.hash(userId, role, username, password, firstName, lastName, email, age, locale);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "role=" + role +
+                "userId=" + userId +
+                ", role=" + role +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +

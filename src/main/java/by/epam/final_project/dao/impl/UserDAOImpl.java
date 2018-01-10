@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
             "INSERT INTO users (role, username, password, first_name, last_name, email, locale_id) " +
             "VALUES (?, ?, MD5(?), ?, ?, ?, (SELECT locale_id FROM locales l WHERE l.language = ?))";
     private String FIND_USER_QUERY =
-            "SELECT u.role, u.username, u.first_name, u.last_name, u.email, l.language, l.country " +
+            "SELECT u.user_id, u.role, u.username, u.first_name, u.last_name, u.email, l.language, l.country " +
                     "FROM users u " +
                     "JOIN locales l ON u.locale_id = l.locale_id " +
                     "WHERE u.username = ? AND u.password = MD5(?)";
@@ -44,6 +44,8 @@ public class UserDAOImpl implements UserDAO {
 
             if (resultSet.next()) {
                 user = new User();
+                int id = resultSet.getInt(DatabaseTable.Users.USER_ID);
+                user.setUserId(id);
                 String role = resultSet.getString(DatabaseTable.Users.ROLE);
                 user.setRole(UserRole.valueOf(role.toUpperCase()));
                 String username = resultSet.getString(DatabaseTable.Users.USERNAME);

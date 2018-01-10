@@ -6,6 +6,6 @@
 
 <div class="container">
     <c:if test="${not empty user}">
-        <h3><fmt:message key="greeting" bundle="${greet}" />, ${user.firstName}!</h3>
+        <fmt:message key="greeting" bundle="${greet}" />, ${user.firstName}!
     </c:if>
 </div>
