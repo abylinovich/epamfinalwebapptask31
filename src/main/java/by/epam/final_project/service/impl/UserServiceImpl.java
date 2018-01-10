@@ -7,7 +7,7 @@ import by.epam.final_project.dao.exception.DAOException;
 import by.epam.final_project.service.exception.ServiceException;
 import by.epam.final_project.service.UserService;
 import by.epam.final_project.service.validator.UserValidator;
-import by.epam.final_project.service.validator.UserValidatorFactory;
+import by.epam.final_project.service.validator.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 
@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private final static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     private UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
-    private UserValidator userValidator = UserValidatorFactory.getInstance().getUserValidator();
+    private UserValidator userValidator = ValidatorFactory.getInstance().getUserValidator();
 
     @Override
     public User findUser(String login, String password) throws ServiceException {

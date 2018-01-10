@@ -1,6 +1,7 @@
-package by.epam.final_project.service.validator;
+package by.epam.final_project.service.validator.impl;
 
 import by.epam.final_project.entity.User;
+import by.epam.final_project.service.validator.UserValidator;
 
 public class UserValidatorTemplate implements UserValidator {
 

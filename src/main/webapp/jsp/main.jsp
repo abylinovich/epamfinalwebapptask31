@@ -16,11 +16,18 @@
         <div class="col-sm-2">
         </div>
         <div class="col-sm-8">
-            <h1><fmt:message key="myQuestions" bundle="${home}" /></h1>
-            <c:forEach items="${questions}" var="item">
-                <c:set var="question" value="${item}" scope="request" />
-                <%@include file="block/question.jsp"%>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${not empty questions}">
+                    <h2>${title}</h2>
+                    <c:forEach items="${questions}" var="item">
+                        <c:set var="question" value="${item}" scope="request" />
+                        <%@include file="block/question.jsp"%>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <h2><fmt:message key="noQuestionsMessage" bundle="${ques}" /></h2>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="col-sm-2">
         </div>

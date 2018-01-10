@@ -2,7 +2,6 @@ package by.epam.final_project.service.validator.impl;
 
 import by.epam.final_project.entity.User;
 import by.epam.final_project.entity.UserRole;
-import by.epam.final_project.service.validator.UserValidatorTemplate;
 import org.apache.log4j.Logger;
 
 import java.util.Locale;

@@ -13,10 +13,12 @@ public class CommandResolver {
     private final Map<String, Command> commands = new HashMap<>();
 
     private CommandResolver() {
-        commands.put(LOGIN_PARAMETER_NAME, new LoginCommand());
-        commands.put(REGISTER_PARAMETER_NAME, new RegisterCommand());
-        commands.put(HOME_PARAMETER_NAME, new HomeCommand());
-        commands.put(LOGOUT_PARAMETER_NAME, new LogoutCommand());
+        commands.put(LOGIN_COMMAND_NAME, new LoginCommand());
+        commands.put(REGISTER_COMMAND_NAME, new RegisterCommand());
+        commands.put(HOME_COMMAND_NAME, new HomeCommand());
+        commands.put(LOGOUT_COMMAND_NAME, new LogoutCommand());
+        commands.put(QUESTION_COMMAND_NAME, new QuestionCommand());
+        commands.put(USER_COMMAND_NAME, new UserCommand());
     }
 
     public static CommandResolver getInstance() {

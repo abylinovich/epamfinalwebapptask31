@@ -31,22 +31,25 @@ public class QuestionDAOImpl implements QuestionDAO {
     private String FIND_RANDOM_QUESTION_QUERY =
             FIND_QUESTIONS_QUERY + " ORDER BY RAND() LIMIT 1";
 
-    private String FIND_MY_QUESTIONS_QUERY =
-            FIND_QUESTIONS_QUERY + " WHERE u.username = ?";
+    private String FIND_QUESTIONS_BY_USER_ID_QUERY =
+            FIND_QUESTIONS_QUERY + " WHERE u.user_id = ?";
+
+    private String FIND_QUESTION_BY_ID_QUERY =
+            FIND_QUESTIONS_QUERY + " WHERE q.question_id = ?";
 
     @Override
     public List<Question> findRandomQuestion()  throws DAOException {
+        List<Question> result;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Question> questions;
         try {
             connection = connectionPool.getConnection();
             statement = connection.prepareStatement(FIND_RANDOM_QUESTION_QUERY);
             resultSet = statement.executeQuery();
-            questions = createQuestionsList(resultSet);
+            result = createQuestionsList(resultSet);
             logger.debug("Find random question.");
-            return questions;
+            return result;
 
         } catch (SQLException e) {
             throw new DAOException("Cannot find random question.", e);
@@ -57,17 +60,17 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     @Override
     public List<Question> findQuestions() throws DAOException {
+        List<Question> result;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Question> questions;
         try {
             connection = connectionPool.getConnection();
             statement = connection.prepareStatement(FIND_QUESTIONS_QUERY);
             resultSet = statement.executeQuery();
-            questions = createQuestionsList(resultSet);
+            result = createQuestionsList(resultSet);
             logger.debug("Find all questions.");
-            return questions;
+            return result;
 
         } catch (SQLException e) {
             throw new DAOException("Cannot find random question.", e);
@@ -77,22 +80,44 @@ public class QuestionDAOImpl implements QuestionDAO {
     }
 
     @Override
-    public List<Question> findQuestions(String username) throws DAOException {
+    public List<Question> findQuestionsByUser(int id) throws DAOException {
+        List<Question> result;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Question> questions;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(FIND_MY_QUESTIONS_QUERY);
-            statement.setString(1, username);
+            statement = connection.prepareStatement(FIND_QUESTIONS_BY_USER_ID_QUERY);
+            statement.setInt(1, id);
             resultSet = statement.executeQuery();
-            questions = createQuestionsList(resultSet);
-            logger.debug("Find questions for user '" + username + "'.");
-            return questions;
+            result = createQuestionsList(resultSet);
+            logger.debug("Find questions for user id='" + id + "'.");
+            return result;
 
         } catch (SQLException e) {
             throw new DAOException("Cannot find random question.", e);
+        } finally {
+            connectionPool.close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
+    public List<Question> findQuestion(int id) throws DAOException {
+        List<Question> result;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(FIND_QUESTION_BY_ID_QUERY);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            result = createQuestionsList(resultSet);
+            logger.debug("Find question id='" + id + "'.");
+            return result;
+
+        } catch (SQLException e) {
+            throw new DAOException("Cannot find question id ='" + id + "'.", e);
         } finally {
             connectionPool.close(connection, statement, resultSet);
         }

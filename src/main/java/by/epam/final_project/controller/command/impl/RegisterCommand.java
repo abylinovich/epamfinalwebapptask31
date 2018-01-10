@@ -18,7 +18,7 @@ import java.util.Locale;
 import static by.epam.final_project.controller.command.constant.FrontMessage.CANNOT_REGISTER_USER_MESSAGE;
 import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
 import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
-import static by.epam.final_project.controller.command.constant.PagePath.HOME_PAGE_PATH;
+import static by.epam.final_project.controller.command.constant.PagePath.MAIN_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.REGISTER_PAGE_PATH;
 
 public class RegisterCommand implements Command {
@@ -43,7 +43,7 @@ public class RegisterCommand implements Command {
 
             HttpSession session = request.getSession(true);
             session.setAttribute(USERNAME_PARAMETER_NAME, user);
-            response.sendRedirect(HOME_PAGE_PATH);
+            response.sendRedirect(MAIN_PAGE_PATH);
         } catch (ServiceException e) {
             logger.error("Cannot register user.", e);
             request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_REGISTER_USER_MESSAGE);

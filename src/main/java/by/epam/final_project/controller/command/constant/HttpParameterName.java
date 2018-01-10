@@ -3,17 +3,23 @@ package by.epam.final_project.controller.command.constant;
 public class HttpParameterName {
 
     public static final String COMMAND_PARAMETER_NAME = "command";
-    public static final String LOGIN_PARAMETER_NAME = "login";
-    public static final String REGISTER_PARAMETER_NAME = "register";
-    public static final String HOME_PARAMETER_NAME = "home";
-    public static final String LOGOUT_PARAMETER_NAME = "logout";
-    public static final String CONTENT_PARAMETER_NAME = "content";
+    public static final String LOGIN_COMMAND_NAME = "login";
+    public static final String REGISTER_COMMAND_NAME = "register";
+    public static final String HOME_COMMAND_NAME = "home";
+    public static final String LOGOUT_COMMAND_NAME = "logout";
+    public static final String QUESTION_COMMAND_NAME = "question";
+    public static final String USER_COMMAND_NAME = "user";
 
 
     public static final String LANGUAGE_PARAMETER_NAME = "language";
 
     public static final String REFERER_HEADER_NAME = "Referer";
 
+    public static final String ID_PARAMETER_NAME = "id";
+    public static final String LOGIN_PARAMETER_NAME = "login";
+    public static final String REGISTER_PARAMETER_NAME = "register";
+    public static final String HOME_PARAMETER_NAME = "home";
+    public static final String LOGOUT_PARAMETER_NAME = "logout";
     public static final String USER_PARAMETER_NAME = "user";
     public static final String USERNAME_PARAMETER_NAME = "username";
     public static final String PASSWORD_PARAMETER_NAME = "password";
@@ -25,6 +31,7 @@ public class HttpParameterName {
     public static final String QUESTIONS_PARAMETER_NAME = "questions";
     public static final String RANDOM_QUESTION_PARAMETER_NAME = "random";
 
+    public static final String TITLE_MESSAGE_PARAMETER_NAME = "title";
     public static final String ERROR_MESSAGE_PARAMETER_NAME = "errorMessage";
 
 

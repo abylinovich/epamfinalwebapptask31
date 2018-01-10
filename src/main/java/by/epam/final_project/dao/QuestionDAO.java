@@ -11,6 +11,8 @@ public interface QuestionDAO {
 
     List<Question> findQuestions() throws DAOException;
 
-    List<Question> findQuestions(String username) throws DAOException;
+    List<Question> findQuestion(int id) throws DAOException;
+
+    List<Question> findQuestionsByUser(int id) throws DAOException;
 
 }

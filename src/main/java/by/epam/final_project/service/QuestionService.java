@@ -11,6 +11,8 @@ public interface QuestionService {
 
     List<Question> getQuestions() throws ServiceException;
 
-    List<Question> getQuestions(String username) throws ServiceException;
+    List<Question> getQuestion(String id) throws ServiceException;
+
+    List<Question> getQuestionsByUser(String id) throws ServiceException;
 
 }

@@ -6,7 +6,7 @@
 
 <c:if test="${not empty user}">
     <div class="btn-group-vertical">
-        <a class="btn button-lang" href="/action?command=question&do=all"><fmt:message key="myQuestions" bundle="${ques}" /></a>
+        <a class="btn button-lang" href="/action?command=question&do=all"><fmt:message key="questions" bundle="${ques}" /></a>
         <a class="btn button-lang" href="/action?command=question&do=ask"><fmt:message key="askQuestion" bundle="${ques}" /></a>
     </div>
 </c:if>

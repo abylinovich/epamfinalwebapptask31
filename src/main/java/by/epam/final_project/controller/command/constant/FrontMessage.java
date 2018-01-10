@@ -11,6 +11,7 @@ public class FrontMessage {
     public static final String USER_NOT_FOUND_MESSAGE = "Cannot login. Input data is not valid.";
     public static final String SERVER_ERROR_MESSAGE = "Server is not working correctly." + TRY_AGAIN_MESSAGE;
 
+    public static final String MY_QUESTIONS_MESSAGE = "My questions";
     public static final String QUESTIONS_NOT_FOUND_MESSAGE = "No questions found.";
 
     private FrontMessage() {
