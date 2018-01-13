@@ -9,8 +9,9 @@
 <head>
     <title>Home</title>
 </head>
+<script src="../resources/js/libs/jquery-3.2.1.min.js"></script>
+<script src="../resources/js/main.js"></script>
 <body>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2">
@@ -18,14 +19,17 @@
         <div class="col-sm-8">
             <c:choose>
                 <c:when test="${not empty questions}">
-                    <h2>${title}</h2>
+                    <h3>${title}</h3>
                     <c:forEach items="${questions}" var="item">
                         <c:set var="question" value="${item}" scope="request" />
                         <%@include file="block/question.jsp"%>
                     </c:forEach>
                 </c:when>
+                <c:when test="${not empty input}">
+                    <%@include file="block/question-ask.jsp"%>
+                </c:when>
                 <c:otherwise>
-                    <h2><fmt:message key="noQuestionsMessage" bundle="${ques}" /></h2>
+                    <h3><fmt:message key="noQuestionsMessage" bundle="${ques}" /></h3>
                 </c:otherwise>
             </c:choose>
         </div>

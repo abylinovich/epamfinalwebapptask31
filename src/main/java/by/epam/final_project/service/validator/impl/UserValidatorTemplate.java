@@ -6,7 +6,7 @@ import by.epam.final_project.service.validator.UserValidator;
 public class UserValidatorTemplate implements UserValidator {
 
     @Override
-    public boolean validateUser(User user) {
+    public boolean validate(User user) {
         return true;
     }
 

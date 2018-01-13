@@ -37,6 +37,10 @@ public class QuestionDAOImpl implements QuestionDAO {
     private String FIND_QUESTION_BY_ID_QUERY =
             FIND_QUESTIONS_QUERY + " WHERE q.question_id = ?";
 
+    private String INSERT_QUESTION_QUERY =
+            "INSERT INTO questions (question_title, question, theme_id, user_id) VALUE (?, ?, ?, ?)";
+
+
     @Override
     public List<Question> findRandomQuestion()  throws DAOException {
         List<Question> result;
@@ -120,6 +124,29 @@ public class QuestionDAOImpl implements QuestionDAO {
             throw new DAOException("Cannot find question id ='" + id + "'.", e);
         } finally {
             connectionPool.close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
+    public void insertQuestion(Question question) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connectionPool.getConnection();
+
+            statement = connection.prepareStatement(INSERT_QUESTION_QUERY);
+            statement.setString(1, question.getTitle());
+            statement.setString(2, question.getQuestion());
+            statement.setInt(3, question.getTheme().getThemeId());
+            statement.setInt(4, question.getUser().getUserId());
+
+            statement.executeUpdate();
+            logger.debug("New question has been successfully insert into database.");
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to insert question", e);
+        } finally {
+            connectionPool.close(connection, statement);
         }
     }
 

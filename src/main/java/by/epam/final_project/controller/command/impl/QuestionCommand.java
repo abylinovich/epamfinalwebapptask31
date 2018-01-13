@@ -1,52 +1,88 @@
 package by.epam.final_project.controller.command.impl;
 
 import by.epam.final_project.controller.command.Command;
+import by.epam.final_project.controller.command.impl.question.FooterBuilder;
+import by.epam.final_project.controller.command.impl.question.QuestionStrategy;
+import by.epam.final_project.controller.command.impl.question.QuestionStrategyResolver;
 import by.epam.final_project.entity.Question;
+import by.epam.final_project.entity.Theme;
+import by.epam.final_project.entity.User;
 import by.epam.final_project.service.QuestionService;
 import by.epam.final_project.service.ServiceFactory;
 import by.epam.final_project.service.exception.ServiceException;
+import by.epam.final_project.service.validator.QuestionValidator;
+import by.epam.final_project.service.validator.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.MAIN_PAGE_PATH;
+import static by.epam.final_project.controller.command.constant.PagePath.MY_QUESTIONS_URL_PATTERN;
 
 public class QuestionCommand implements Command {
 
     private final static Logger logger = Logger.getLogger(QuestionCommand.class);
 
+    private QuestionStrategyResolver strategyResolver = QuestionStrategyResolver.getInstance();
+    private FooterBuilder footerBuilder = FooterBuilder.getInstance();
     private QuestionService questionService = ServiceFactory.getInstance().getQuestionService();
 
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String questionId = request.getParameter(ID_PARAMETER_NAME);
-            List<Question> userQuestions = questionService.getQuestion(questionId);
-            request.setAttribute(QUESTIONS_PARAMETER_NAME, userQuestions);
-        } catch (ServiceException e) {
-            request.setAttribute(QUESTIONS_PARAMETER_NAME, null);
+        String type = request.getParameter(DO_PARAMETER_NAME);
+        QuestionStrategy questionStrategy = strategyResolver.getStrategy(type);
+        String forwardPagePath;
+        if(questionStrategy != null) {
+            questionStrategy.setPageContent(request, response);
+            footerBuilder.setFooterContent(request, response);
+            forwardPagePath = MAIN_PAGE_PATH;
+            logger.debug("Show main page.");
+        } else {
+            forwardPagePath = ERROR_PAGE_PATH;
+            logger.debug("Invalid request. Show error page.");
         }
-
-        try {
-            List<Question> randomQuestion = questionService.getRandomQuestion();
-            request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, randomQuestion);
-        } catch (ServiceException e) {
-            request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, null);
-        }
-        logger.debug("Show main page.");
-        request.getRequestDispatcher(MAIN_PAGE_PATH).forward(request, response);
+        request.getRequestDispatcher(forwardPagePath).forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: 10.01.2018 Ask question
-    }
+        Question question = new Question();
 
+        String title = request.getParameter(QUESTION_TITLE_PARAMETER_NAME);
+        question.setTitle(title);
+
+        String data = request.getParameter(QUESTION_DATA_PARAMETER_NAME);
+        question.setQuestion(data);
+
+        User user = (User) request.getSession().getAttribute(USER_PARAMETER_NAME);
+        question.setUser(user);
+
+        Theme theme = new Theme();
+        Integer themeId;
+        try {
+            themeId = Integer.valueOf(request.getParameter(QUESTION_THEME_PARAMETER_NAME));
+        } catch (NumberFormatException e) {
+            themeId = null;
+        }
+        theme.setThemeId(themeId);
+        question.setTheme(theme);
+
+        try {
+            questionService.addQuestion(question);
+            response.sendRedirect(MY_QUESTIONS_URL_PATTERN);
+            logger.debug("New question has been created successfully. Forward to my questions page.");
+        } catch (ServiceException e) {
+            logger.error("Cannot add question.", e);
+            request.setAttribute(ADD_QUESTION_ERROR_PARAMETER_NAME, true);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+            logger.debug("Creating question failed. Redirect to error page.");
+        }
+    }
 
 }

@@ -7,11 +7,12 @@
 
 
 <html>
+<script src="../resources/js/libs/jquery-3.2.1.min.js"></script>
+<script src="../resources/js/login.js"></script>
 <head>
   <title>Login</title>
 </head>
-<script src="../resources/js/libs/jquery-3.2.1.min.js"></script>
-<script src="../resources/js/login.js"></script>
+
 <body>
 
 <div class="container">

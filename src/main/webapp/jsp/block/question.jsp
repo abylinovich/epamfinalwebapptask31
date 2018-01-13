@@ -10,7 +10,7 @@
             ${question.theme.title}
         </h3>
         <h1>
-            <a href="/action?command=question&id=${question.questionId}">${question.title}</a>
+            <a href="/action?command=question&do=get&id=${question.questionId}">${question.title}</a>
         </h1>
         <h2>
             <fmt:message key="question" />

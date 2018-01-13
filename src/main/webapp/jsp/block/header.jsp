@@ -7,8 +7,9 @@
 
 <c:set var="user" value="${sessionScope.user}" scope="session" />
 
-
+<script src="../../resources/js/libs/jquery-3.2.1.min.js"></script>
 <script src="../../resources/js/validation.js"></script>
+<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
 <script src="../../resources/js/libs/bootstrap.min.js"></script>
 <link href="../../resources/css/libs/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
 <link href="../../resources/css/style.css" rel="stylesheet" type="text/css" media="all"/>

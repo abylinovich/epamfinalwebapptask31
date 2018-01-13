@@ -15,4 +15,6 @@ public interface QuestionService {
 
     List<Question> getQuestionsByUser(String id) throws ServiceException;
 
+    void addQuestion(Question question) throws ServiceException;
+
 }

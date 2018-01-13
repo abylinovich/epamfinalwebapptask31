@@ -1,6 +1,7 @@
 package by.epam.final_project.dao;
 
 import by.epam.final_project.dao.impl.QuestionDAOImpl;
+import by.epam.final_project.dao.impl.ThemeDAOImpl;
 import by.epam.final_project.dao.impl.UserDAOImpl;
 
 public class DAOFactory {
@@ -9,6 +10,7 @@ public class DAOFactory {
 
     private final UserDAO userDAO = new UserDAOImpl();
     private final QuestionDAO questionDAO = new QuestionDAOImpl();
+    private final ThemeDAO themeDAO = new ThemeDAOImpl();
 
     private DAOFactory() {
     }
@@ -24,5 +26,7 @@ public class DAOFactory {
     public QuestionDAO getQuestionDAO() {
         return questionDAO;
     }
+
+    public ThemeDAO getThemeDAO() { return themeDAO; }
 
 }

@@ -40,7 +40,7 @@ public class LoginCommand implements Command {
                 HttpSession session = request.getSession(true);
                 session.setAttribute(USER_PARAMETER_NAME, user);
                 logger.debug("Login successful. Redirect to home page.");
-                response.sendRedirect(HOME_PAGE_URL_PATTERN);
+                response.sendRedirect(MY_QUESTIONS_URL_PATTERN);
                 return;
             } else {
                 request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, USER_NOT_FOUND_MESSAGE);

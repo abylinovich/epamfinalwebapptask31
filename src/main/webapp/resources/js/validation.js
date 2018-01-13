@@ -1,9 +1,10 @@
 +function () {
 
-    var $alphanumericPattern = /^[\w]{3,15}$/u,
+    var $alphanumericPattern = /^[\d\u0041-\u007E\u0400-\u04FF]{3,15}$/,
         $emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        $textPattern = /^[\w]{2,15}$/u,
-        $excludeDigitsAndUnderscorePattern = /\d|_/
+        $textPattern = /^[\u0020-\u007E\u0400-\u04FF]{2,15}$/,
+        $questionTitlePattern = /^[\u0020-\u007E\u0400-\u04FF]{1,50}$/,
+        $questionPattern = /^[\u0020-\u007E\u0400-\u04FF]{1,255}$/
     ;
 
     var Validation = {
@@ -24,7 +25,7 @@
 
         validateOnEmpty: function (inputs) {
             for(var i = 0; i < inputs.length; i++) {
-                if(!inputs[i].val().trim()) {
+                if(!inputs[i].val()) {
                     return false;
                 }
             }
@@ -35,6 +36,9 @@
             if(value.val() === "") {
                 return true;
             }
+            console.log(value.val());
+            console.log($alphanumericPattern.test(value.val()));
+            console.log($alphanumericPattern.test(value));
             return $alphanumericPattern.test(value.val());
         },
 
@@ -57,7 +61,7 @@
             if(text === "") {
                 return true;
             }
-            return $textPattern.test(text) && !$excludeDigitsAndUnderscorePattern.test(text);
+            return $textPattern.test(text);
         },
 
         validateAgeField: function (value) {
@@ -69,6 +73,22 @@
                 return false;
             }
             return true;
+        },
+
+        validateQuestionTitleField: function (value) {
+            var text = value.val();
+            if(text === "") {
+                return true;
+            }
+            return $questionTitlePattern.test(text);
+        },
+
+        validateQuestionField: function (value) {
+            var text = value.val();
+            if(text === "") {
+                return true;
+            }
+            return $questionPattern.test(text);
         }
 
     };

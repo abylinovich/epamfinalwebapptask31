@@ -1,6 +1,7 @@
 package by.epam.final_project.service;
 
 import by.epam.final_project.service.impl.QuestionServiceImpl;
+import by.epam.final_project.service.impl.ThemeServiceImpl;
 import by.epam.final_project.service.impl.UserServiceImpl;
 
 public class ServiceFactory {
@@ -9,6 +10,7 @@ public class ServiceFactory {
 
     private final UserService userService = new UserServiceImpl();
     private final QuestionService questionService = new QuestionServiceImpl();
+    private final ThemeService themeService = new ThemeServiceImpl();
 
     private ServiceFactory() {
     }
@@ -23,6 +25,10 @@ public class ServiceFactory {
 
     public QuestionService getQuestionService() {
         return questionService;
+    }
+
+    public ThemeService getThemeService() {
+        return themeService;
     }
 
 }

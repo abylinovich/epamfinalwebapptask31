@@ -15,4 +15,6 @@ public interface QuestionDAO {
 
     List<Question> findQuestionsByUser(int id) throws DAOException;
 
+    void insertQuestion(Question question) throws DAOException;
+
 }

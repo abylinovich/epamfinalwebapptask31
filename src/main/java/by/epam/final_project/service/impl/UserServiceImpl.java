@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) throws ServiceException {
-        if(!userValidator.validateUser(user)) {
+        if(!userValidator.validate(user)) {
             throw new ServiceException("User was not registered. Validation error.");
         }
         try {

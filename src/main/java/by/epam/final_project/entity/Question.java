@@ -9,7 +9,7 @@ public class Question implements Serializable {
 
     private static final long serialVersionUID = 508717400744783591L;
 
-    private int questionId;
+    private Integer questionId;
     private String title;
     private String question;
     private Theme theme;
@@ -17,11 +17,11 @@ public class Question implements Serializable {
     private List<Answer> answers = new ArrayList<>();
 
 
-    public int getQuestionId() {
+    public Integer getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
     }
 
@@ -70,26 +70,26 @@ public class Question implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question1 = (Question) o;
-        return questionId == question1.questionId &&
-                Objects.equals(theme, question1.theme) &&
+        return Objects.equals(questionId, question1.questionId) &&
                 Objects.equals(title, question1.title) &&
                 Objects.equals(question, question1.question) &&
+                Objects.equals(theme, question1.theme) &&
                 Objects.equals(user, question1.user) &&
                 Objects.equals(answers, question1.answers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(questionId, theme, title, question, user, answers);
+        return Objects.hash(questionId, title, question, theme, user, answers);
     }
 
     @Override
     public String toString() {
         return "Question{" +
                 "questionId=" + questionId +
-                ", theme=" + theme +
                 ", title='" + title + '\'' +
                 ", question='" + question + '\'' +
+                ", theme=" + theme +
                 ", user=" + user +
                 ", answers=" + answers +
                 '}';

@@ -23,7 +23,7 @@ public class UserValidatorImpl extends UserValidatorTemplate {
 
 
     @Override
-    public boolean validateUser(User user) {
+    public boolean validate(User user) {
         UserRole role = user.getRole();
         if(!validateRole(role)) {
             logger.debug("Validation failed. Role is null.");
