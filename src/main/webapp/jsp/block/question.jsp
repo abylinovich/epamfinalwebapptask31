@@ -20,5 +20,11 @@
             <fmt:message key="author" />
             <a href="/action?command=user&id=${question.user.userId}">${question.user.username}</a>
         </h3>
+        <c:if test="${not empty question.answers}">
+            <c:forEach items="${question.answers}" var="item">
+                <c:set var="answer" value="${item}" scope="request" />
+                <%@include file="answer.jsp"%>
+            </c:forEach>
+        </c:if>
     </section>
 </div>

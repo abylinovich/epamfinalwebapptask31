@@ -10,8 +10,6 @@ import by.epam.final_project.entity.User;
 import by.epam.final_project.service.QuestionService;
 import by.epam.final_project.service.ServiceFactory;
 import by.epam.final_project.service.exception.ServiceException;
-import by.epam.final_project.service.validator.QuestionValidator;
-import by.epam.final_project.service.validator.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -19,7 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.DO_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.QUESTION_TITLE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.ADD_QUESTION_ERROR_ATTRIBUTE_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.QUESTION_DATA_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.QUESTION_THEME_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.MAIN_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.MY_QUESTIONS_URL_PATTERN;
@@ -79,7 +82,7 @@ public class QuestionCommand implements Command {
             logger.debug("New question has been created successfully. Forward to my questions page.");
         } catch (ServiceException e) {
             logger.error("Cannot add question.", e);
-            request.setAttribute(ADD_QUESTION_ERROR_PARAMETER_NAME, true);
+            request.setAttribute(ADD_QUESTION_ERROR_ATTRIBUTE_NAME, true);
             request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
             logger.debug("Creating question failed. Redirect to error page.");
         }

@@ -8,7 +8,10 @@ import by.epam.final_project.dao.exception.DAOException;
 import by.epam.final_project.entity.UserRole;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Locale;
 
 public class UserDAOImpl implements UserDAO {

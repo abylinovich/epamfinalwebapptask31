@@ -1,5 +1,6 @@
 package by.epam.final_project.service.validator;
 
+import by.epam.final_project.service.validator.impl.AnswerValidatorImpl;
 import by.epam.final_project.service.validator.impl.ParameterValidatorImpl;
 import by.epam.final_project.service.validator.impl.QuestionValidatorImpl;
 import by.epam.final_project.service.validator.impl.UserValidatorImpl;
@@ -11,6 +12,7 @@ public class ValidatorFactory {
     private final UserValidator userValidator = new UserValidatorImpl();
     private final ParameterValidator parameterValidator = new ParameterValidatorImpl();
     private final QuestionValidator questionValidator = new QuestionValidatorImpl();
+    private final AnswerValidator answerValidator = new AnswerValidatorImpl();
 
 
     private ValidatorFactory() {
@@ -29,5 +31,9 @@ public class ValidatorFactory {
     }
 
     public QuestionValidator getQuestionValidator() { return questionValidator; }
+
+    public AnswerValidator getAnswerValidator() {
+        return answerValidator;
+    }
 
 }

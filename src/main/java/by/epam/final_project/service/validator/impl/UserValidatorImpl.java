@@ -97,7 +97,7 @@ public class UserValidatorImpl extends UserValidatorTemplate {
     }
 
     private boolean validateRole(UserRole role) {
-        if(role != null) {
+        if(role == null) {
             return false;
         }
         return true;

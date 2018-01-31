@@ -4,7 +4,7 @@
         $emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         $textPattern = /^[\u0020-\u007E\u0400-\u04FF]{2,15}$/,
         $questionTitlePattern = /^[\u0020-\u007E\u0400-\u04FF]{1,50}$/,
-        $questionPattern = /^[\u0020-\u007E\u0400-\u04FF]{1,255}$/
+        $messagePattern = /^[\u0020-\u007E\u0400-\u04FF]{1,255}$/
     ;
 
     var Validation = {
@@ -75,7 +75,7 @@
             return true;
         },
 
-        validateQuestionTitleField: function (value) {
+        validateTitleField: function (value) {
             var text = value.val();
             if(text === "") {
                 return true;
@@ -83,12 +83,12 @@
             return $questionTitlePattern.test(text);
         },
 
-        validateQuestionField: function (value) {
+        validateMessageField: function (value) {
             var text = value.val();
             if(text === "") {
                 return true;
             }
-            return $questionPattern.test(text);
+            return $messagePattern.test(text);
         }
 
     };

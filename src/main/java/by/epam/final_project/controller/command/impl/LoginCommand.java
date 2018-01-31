@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static by.epam.final_project.controller.command.constant.FrontMessage.CANNOT_LOGIN_MESSAGE;
-import static by.epam.final_project.controller.command.constant.FrontMessage.USER_NOT_FOUND_MESSAGE;
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
-import static by.epam.final_project.controller.command.constant.PagePath.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.PASSWORD_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USERNAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.NO_SUCH_USER_ERROR_ATTRIBUTE_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.CANNOT_LOGIN_ERROR_ATTRIBUTE_NAME;
+import static by.epam.final_project.controller.command.constant.PagePath.LOGIN_PAGE_PATH;
+import static by.epam.final_project.controller.command.constant.PagePath.MY_QUESTIONS_URL_PATTERN;
+import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
+
 
 public class LoginCommand implements Command {
 
@@ -43,11 +48,11 @@ public class LoginCommand implements Command {
                 response.sendRedirect(MY_QUESTIONS_URL_PATTERN);
                 return;
             } else {
-                request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, USER_NOT_FOUND_MESSAGE);
+                request.setAttribute(NO_SUCH_USER_ERROR_ATTRIBUTE_NAME, true);
             }
         } catch (ServiceException e) {
             logger.error("Cannot login user.", e);
-            request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_LOGIN_MESSAGE);
+            request.setAttribute(CANNOT_LOGIN_ERROR_ATTRIBUTE_NAME, true);
         }
         logger.debug("Login failed. Redirect to error page.");
         request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);

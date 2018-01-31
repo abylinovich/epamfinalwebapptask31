@@ -17,7 +17,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final static Logger logger = Logger.getLogger(QuestionServiceImpl.class);
 
-
     private ParameterValidator parameterValidator = ValidatorFactory.getInstance().getParameterValidator();
     private QuestionValidator questionValidator = ValidatorFactory.getInstance().getQuestionValidator();
     private QuestionDAO questionDAO = DAOFactory.getInstance().getQuestionDAO();
@@ -33,17 +32,34 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getQuestions() throws ServiceException {
+    public int getQuestionsCount() throws ServiceException {
         try {
-            return questionDAO.findQuestions();
+            return questionDAO.getQuestionsCount();
         } catch (DAOException e) {
-            throw new ServiceException("Cannot get all questions.", e);
+            throw new ServiceException("Cannot get total questions count.", e);
         }
     }
 
     @Override
-    public List<Question> getQuestion(String questionId) throws ServiceException {
-        if(!parameterValidator.validateId(questionId)) {
+    public List<Question> getQuestions(String page, String count) throws ServiceException {
+        if(!parameterValidator.validateNumeric(page)) {
+            throw new ServiceException("Validation error. Invalid page value '" + page + "'.");
+        }
+        if(!parameterValidator.validateNumeric(count)) {
+            throw new ServiceException("Validation error. Invalid count value '" + count + "'.");
+        }
+        try {
+            List<Question> result = questionDAO.findQuestions(Integer.valueOf(page) - 1, Integer.valueOf(count));
+            logger.debug("Get '" + count + "' questions for page '" + page + "'.");
+            return result;
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot get questions.", e);
+        }
+    }
+
+    @Override
+    public Question getQuestion(String questionId) throws ServiceException {
+        if(!parameterValidator.validateNumeric(questionId)) {
             throw new ServiceException("Validation error. Invalid question id='" + questionId + "'.");
         }
         int id = Integer.valueOf(questionId);
@@ -55,14 +71,32 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getQuestionsByUser(String id) throws ServiceException {
-        if(!parameterValidator.validateId(id)) {
+    public List<Question> getQuestionsByUser(String id, String page, String count) throws ServiceException {
+        if(!parameterValidator.validateNumeric(id)) {
             throw new ServiceException("Validation error. Invalid user id='" + id + "'.");
         }
+        if(!parameterValidator.validateNumeric(page)) {
+            throw new ServiceException("Validation error. Invalid page value ='" + page + "'.");
+        }
+        if(!parameterValidator.validateNumeric(count)) {
+            throw new ServiceException("Validation error. Invalid count value ='" + count + "'.");
+        }
         try {
-            return questionDAO.findQuestionsByUser(Integer.valueOf(id));
+            return questionDAO.findQuestionsByUser(Integer.valueOf(id), Integer.valueOf(page) - 1, Integer.valueOf(count));
         } catch (DAOException e) {
             throw new ServiceException("Cannot get questions for user id='" + id + "'.", e);
+        }
+    }
+
+    @Override
+    public int getQuestionsCountForUser(String id) throws ServiceException {
+        if(!parameterValidator.validateNumeric(id)) {
+            throw new ServiceException("Validation error. Invalid value id = '" + id + "'.");
+        }
+        try {
+            return questionDAO.getQuestionsCountByUser(Integer.valueOf(id));
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot get total questions count.", e);
         }
     }
 

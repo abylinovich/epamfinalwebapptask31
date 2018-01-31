@@ -9,10 +9,8 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.List;
-
 import static by.epam.final_project.controller.command.constant.HttpParameterName.ID_PARAMETER_NAME;
-import static by.epam.final_project.controller.command.constant.HttpParameterName.QUESTIONS_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.QUESTION_PARAMETER_NAME;
 
 public class ConcreteQuestionStrategy implements QuestionStrategy {
 
@@ -23,12 +21,13 @@ public class ConcreteQuestionStrategy implements QuestionStrategy {
 
     @Override
     public void setPageContent(HttpServletRequest request, HttpServletResponse response) {
+        String questionId = request.getParameter(ID_PARAMETER_NAME);
         try {
-            String questionId = request.getParameter(ID_PARAMETER_NAME);
-            List<Question> userQuestions = questionService.getQuestion(questionId);
-            request.setAttribute(QUESTIONS_PARAMETER_NAME, userQuestions);
+            Question question = questionService.getQuestion(questionId);
+            request.setAttribute(QUESTION_PARAMETER_NAME, question);
+
         } catch (ServiceException e) {
-            logger.error("Cannot reach questions.", e);
+            logger.error("Cannot reach question id='" + questionId + "'.", e);
         }
     }
 

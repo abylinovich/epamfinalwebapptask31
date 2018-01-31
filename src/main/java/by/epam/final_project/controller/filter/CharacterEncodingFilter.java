@@ -2,7 +2,12 @@ package by.epam.final_project.controller.filter;
 
 import org.apache.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 public class CharacterEncodingFilter implements Filter {

@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@include file="block/header.jsp"%>
 
-<fmt:setBundle basename="Home" var="home" scope="session" />
 
 <html>
 <head>
@@ -19,14 +19,20 @@
         <div class="col-sm-8">
             <c:choose>
                 <c:when test="${not empty questions}">
-                    <h3>${title}</h3>
                     <c:forEach items="${questions}" var="item">
                         <c:set var="question" value="${item}" scope="request" />
                         <%@include file="block/question.jsp"%>
                     </c:forEach>
+                    <c:if test="${sessionScope.totalQuestions gt 1}">
+                        <%@include file="block/pagination-menu.jsp"%>
+                    </c:if>
                 </c:when>
-                <c:when test="${not empty input}">
-                    <%@include file="block/question-ask.jsp"%>
+                <c:when test="${not empty question}">
+                    <%@include file="block/question.jsp"%>
+                    <%@include file="block/answer-input.jsp"%>
+                </c:when>
+                <c:when test="${input}">
+                    <%@include file="block/question-input.jsp"%>
                 </c:when>
                 <c:otherwise>
                     <h3><fmt:message key="noQuestionsMessage" bundle="${ques}" /></h3>

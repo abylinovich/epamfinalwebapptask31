@@ -43,6 +43,16 @@
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
+  <filter>
+    <filter-name>PaginationFilter</filter-name>
+    <filter-class>by.epam.final_project.controller.filter.PaginationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>PaginationFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
   <welcome-file-list>
     <welcome-file>/jsp/login.jsp</welcome-file>
   </welcome-file-list>

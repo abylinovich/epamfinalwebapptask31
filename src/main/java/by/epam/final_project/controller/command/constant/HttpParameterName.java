@@ -5,9 +5,9 @@ public class HttpParameterName {
     public static final String COMMAND_PARAMETER_NAME = "command";
     public static final String LOGIN_COMMAND_NAME = "login";
     public static final String REGISTER_COMMAND_NAME = "register";
-    public static final String HOME_COMMAND_NAME = "home";
     public static final String LOGOUT_COMMAND_NAME = "logout";
     public static final String QUESTION_COMMAND_NAME = "question";
+    public static final String ANSWER_COMMAND_NAME = "answer";
     public static final String USER_COMMAND_NAME = "user";
 
 
@@ -28,6 +28,7 @@ public class HttpParameterName {
     public static final String LOCALE_PARAMETER_NAME = "userLocale";
 
     public static final String QUESTION_TITLE_PARAMETER_NAME = "title";
+    public static final String QUESTION_ID_PARAMETER_NAME = "questionId";
     public static final String QUESTION_DATA_PARAMETER_NAME = "question";
     public static final String QUESTION_THEME_PARAMETER_NAME = "theme";
 
@@ -37,14 +38,28 @@ public class HttpParameterName {
     public static final String GET_DO_PARAMETER_VALUE = "get";
     public static final String ASK_DO_PARAMETER_VALUE = "ask";
     public static final String QUESTIONS_PARAMETER_NAME = "questions";
+    public static final String QUESTION_PARAMETER_NAME = "question";
+    public static final String ANSWER_PARAMETER_NAME = "answer";
     public static final String THEMES_PARAMETER_NAME = "themes";
     public static final String INPUT_PARAMETER_NAME = "input";
     public static final String RANDOM_QUESTION_PARAMETER_NAME = "random";
+    public static final String PAGE_PARAMETER_NAME = "page";
+    public static final String COUNT_PARAMETER_NAME = "count";
 
-    public static final String TITLE_MESSAGE_PARAMETER_NAME = "title";
-    public static final String ERROR_MESSAGE_PARAMETER_NAME = "errorMessage";
-    public static final String ADD_QUESTION_ERROR_PARAMETER_NAME = "errorMessage";
 
+    public static final String TOTAL_QUESTIONS_ATTRIBUTE_NAME = "totalQuestions";
+    public static final String QUERY_ATTRIBUTE_NAME = "query";
+    public static final String PROCESSED_ATTRIBUTE_NAME = "processed";
+
+
+    public static final String MESSAGE_ERROR_ATTRIBUTE_NAME = "generalError";
+    public static final String METHOD_ERROR_ATTRIBUTE_NAME = "methodError";
+
+    public static final String NO_SUCH_USER_ERROR_ATTRIBUTE_NAME = "noSuchUserError";
+    public static final String CANNOT_LOGIN_ERROR_ATTRIBUTE_NAME = "cannotLoginError";
+    public static final String CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME = "cannotRegisterError";
+    public static final String ADD_QUESTION_ERROR_ATTRIBUTE_NAME = "addQuestionError";
+    public static final String ADD_ANSWER_ERROR_ATTRIBUTE_NAME = "addAnswerError";
 
 
     private HttpParameterName() {

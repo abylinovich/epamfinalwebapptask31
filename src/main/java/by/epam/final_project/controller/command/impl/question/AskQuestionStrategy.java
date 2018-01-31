@@ -13,7 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Locale;
 
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.INPUT_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.LANGUAGE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.THEMES_PARAMETER_NAME;
+
 
 public class AskQuestionStrategy implements QuestionStrategy {
 

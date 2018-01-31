@@ -7,9 +7,18 @@ public class Answer implements Serializable {
 
     private static final long serialVersionUID = 2651881188733250257L;
 
+    private Integer answerId;
     private String answer;
     private Question question;
     private User user;
+
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
+    }
 
     public String getAnswer() {
         return answer;
@@ -40,20 +49,22 @@ public class Answer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer1 = (Answer) o;
-        return Objects.equals(answer, answer1.answer) &&
+        return Objects.equals(answerId, answer1.answerId) &&
+                Objects.equals(answer, answer1.answer) &&
                 Objects.equals(question, answer1.question) &&
                 Objects.equals(user, answer1.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answer, question, user);
+        return Objects.hash(answerId, answer, question, user);
     }
 
     @Override
     public String toString() {
         return "Answer{" +
-                "answer='" + answer + '\'' +
+                "answerId=" + answerId +
+                ", answer='" + answer + '\'' +
                 ", question=" + question +
                 ", user=" + user +
                 '}';

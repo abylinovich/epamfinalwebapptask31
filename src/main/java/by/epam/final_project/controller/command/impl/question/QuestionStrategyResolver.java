@@ -1,12 +1,12 @@
 package by.epam.final_project.controller.command.impl.question;
 
-import by.epam.final_project.controller.command.Command;
-import by.epam.final_project.controller.command.impl.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.GET_DO_PARAMETER_VALUE;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.ALL_DO_PARAMETER_VALUE;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.ASK_DO_PARAMETER_VALUE;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.MY_DO_PARAMETER_VALUE;
 
 public class QuestionStrategyResolver {
 

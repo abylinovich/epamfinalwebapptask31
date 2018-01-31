@@ -2,13 +2,21 @@ package by.epam.final_project.controller.filter;
 
 import org.apache.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.COMMAND_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.REGISTER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USER_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.LOGIN_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.constant.PagePath.LOGIN_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.REGISTER_PAGE_PATH;
 

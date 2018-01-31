@@ -10,6 +10,13 @@ public class DatabaseTable {
         public static final String USER_ID = "user_id";
     }
 
+    public class Answers {
+        public static final String ANSWER_ID = "answer_id";
+        public static final String ANSWER = "answer";
+        public static final String QUESTION_ID = "question_id";
+        public static final String USER_ID = "user_id";
+    }
+
     public class Themes {
         public static final String THEME_ID = "theme_id";
         public static final String LOCALE_ID = "locale_id";

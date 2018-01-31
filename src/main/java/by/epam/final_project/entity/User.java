@@ -8,7 +8,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 7236815861267972605L;
 
-    private int userId;
+    private Integer userId;
     private UserRole role;
     private String username;
     private String password;
@@ -21,11 +21,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -98,8 +98,8 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return userId == user.userId &&
-                age == user.age &&
+        return age == user.age &&
+                Objects.equals(userId, user.userId) &&
                 role == user.role &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&

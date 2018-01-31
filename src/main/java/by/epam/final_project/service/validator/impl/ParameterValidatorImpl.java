@@ -14,11 +14,11 @@ public class ParameterValidatorImpl implements ParameterValidator {
     private Pattern numericPattern = Pattern.compile(NUMERIC_REGEX);
 
     @Override
-    public boolean validateId(String id) {
-        if(id == null) {
+    public boolean validateNumeric(String value) {
+        if(value == null) {
             return false;
         }
-        return numericPattern.matcher(id).matches();
+        return numericPattern.matcher(value).matches();
     }
 
 }

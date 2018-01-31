@@ -15,8 +15,14 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 
-import static by.epam.final_project.controller.command.constant.FrontMessage.CANNOT_REGISTER_USER_MESSAGE;
-import static by.epam.final_project.controller.command.constant.HttpParameterName.*;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.AGE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.USERNAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.EMAIL_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.LOCALE_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.FIRST_NAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.LAST_NAME_PARAMETER_NAME;
+import static by.epam.final_project.controller.command.constant.HttpParameterName.PASSWORD_PARAMETER_NAME;
 import static by.epam.final_project.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.MAIN_PAGE_PATH;
 import static by.epam.final_project.controller.command.constant.PagePath.REGISTER_PAGE_PATH;
@@ -46,7 +52,7 @@ public class RegisterCommand implements Command {
             response.sendRedirect(MAIN_PAGE_PATH);
         } catch (ServiceException e) {
             logger.error("Cannot register user.", e);
-            request.setAttribute(ERROR_MESSAGE_PARAMETER_NAME, CANNOT_REGISTER_USER_MESSAGE);
+            request.setAttribute(CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME, true);
             request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
         }
     }

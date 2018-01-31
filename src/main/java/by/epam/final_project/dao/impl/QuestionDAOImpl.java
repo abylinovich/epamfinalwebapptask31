@@ -4,6 +4,7 @@ import by.epam.final_project.dao.QuestionDAO;
 import by.epam.final_project.dao.connectionpool.ConnectionPool;
 import by.epam.final_project.dao.constant.DatabaseTable;
 import by.epam.final_project.dao.exception.DAOException;
+import by.epam.final_project.entity.Answer;
 import by.epam.final_project.entity.Question;
 import by.epam.final_project.entity.Theme;
 import by.epam.final_project.entity.User;
@@ -28,14 +29,34 @@ public class QuestionDAOImpl implements QuestionDAO {
                     "JOIN users u ON u.user_id = q.user_id " +
                     "JOIN themes t ON q.theme_id = t.theme_id AND t.locale_id = u.locale_id";
 
+    private String GET_QUESTIONS_COUNT_QUERY =
+            "SELECT COUNT(q.question_id) FROM questions q";
+
+    private String FIND_QUESTIONS_PORTION_QUERY =
+            FIND_QUESTIONS_QUERY +  " ORDER BY q.question_id LIMIT ?,?";
+
     private String FIND_RANDOM_QUESTION_QUERY =
             FIND_QUESTIONS_QUERY + " ORDER BY RAND() LIMIT 1";
 
     private String FIND_QUESTIONS_BY_USER_ID_QUERY =
             FIND_QUESTIONS_QUERY + " WHERE u.user_id = ?";
 
+    private String FIND_QUESTIONS_BY_USER_ID_PORTION_QUERY =
+            FIND_QUESTIONS_BY_USER_ID_QUERY +  " ORDER BY q.question_id LIMIT ?,?";
+
+    private String GET_QUESTIONS_COUNT_FOR_USER_QUERY =
+            GET_QUESTIONS_COUNT_QUERY +
+                    " JOIN users u ON u.user_id = q.user_id" +
+                    " WHERE u.user_id = ?";
+
     private String FIND_QUESTION_BY_ID_QUERY =
             FIND_QUESTIONS_QUERY + " WHERE q.question_id = ?";
+
+    private String FIND_ANSWERS_BY_QUESTION_ID_QUERY =
+            "SELECT a.answer_id, a.answer, a.user_id, a.question_id, u.username " +
+                    "FROM answers a " +
+                    "JOIN users u ON a.user_id = u.user_id " +
+                    "WHERE a.question_id = ?";
 
     private String INSERT_QUESTION_QUERY =
             "INSERT INTO questions (question_title, question, theme_id, user_id) VALUE (?, ?, ?, ?)";
@@ -63,17 +84,42 @@ public class QuestionDAOImpl implements QuestionDAO {
     }
 
     @Override
-    public List<Question> findQuestions() throws DAOException {
+    public int getQuestionsCount() throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(GET_QUESTIONS_COUNT_QUERY);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            int total = resultSet.getInt(1);
+            logger.debug("Get total questions count = '" + total + "'.");
+            return total;
+
+        } catch (SQLException e) {
+            throw new DAOException("Cannot get total questions count.", e);
+        } finally {
+            connectionPool.close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
+    public List<Question> findQuestions(int page, int count) throws DAOException {
+        int offset = page * count;
+
         List<Question> result;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(FIND_QUESTIONS_QUERY);
+            statement = connection.prepareStatement(FIND_QUESTIONS_PORTION_QUERY);
+            statement.setInt(1, offset);
+            statement.setInt(2, count);
             resultSet = statement.executeQuery();
             result = createQuestionsList(resultSet);
-            logger.debug("Find all questions.");
+            logger.debug("Find " + count + " questions for page " + page + "' and count '" + count + "'.");
             return result;
 
         } catch (SQLException e) {
@@ -84,30 +130,56 @@ public class QuestionDAOImpl implements QuestionDAO {
     }
 
     @Override
-    public List<Question> findQuestionsByUser(int id) throws DAOException {
+    public List<Question> findQuestionsByUser(int id, int page, int count) throws DAOException {
+        int offset = page * count;
+
         List<Question> result;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(FIND_QUESTIONS_BY_USER_ID_QUERY);
+            statement = connection.prepareStatement(FIND_QUESTIONS_BY_USER_ID_PORTION_QUERY);
+            statement.setInt(1, id);
+            statement.setInt(2, offset);
+            statement.setInt(3, count);
+            resultSet = statement.executeQuery();
+            result = createQuestionsList(resultSet);
+            logger.debug("Find " + count + " questions for user id='" + id + "' for page '" + page + "'.");
+            return result;
+
+        } catch (SQLException e) {
+            throw new DAOException("Cannot find random question.", e);
+        } finally {
+            connectionPool.close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
+    public int getQuestionsCountByUser(int id) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(GET_QUESTIONS_COUNT_FOR_USER_QUERY);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
-            result = createQuestionsList(resultSet);
-            logger.debug("Find questions for user id='" + id + "'.");
-            return result;
+            resultSet.next();
+            int total = resultSet.getInt(1);
+            logger.debug("Get total questions count = '" + total + "' for user id = '" + id + "'.");
+            return total;
 
         } catch (SQLException e) {
-            throw new DAOException("Cannot find random question.", e);
+            throw new DAOException("Cannot get total questions count for user id = '" + id + "'.", e);
         } finally {
             connectionPool.close(connection, statement, resultSet);
         }
     }
 
     @Override
-    public List<Question> findQuestion(int id) throws DAOException {
-        List<Question> result;
+    public Question findQuestion(int id) throws DAOException {
+        List<Question> question;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -116,9 +188,16 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement = connection.prepareStatement(FIND_QUESTION_BY_ID_QUERY);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
-            result = createQuestionsList(resultSet);
+            question = createQuestionsList(resultSet);
             logger.debug("Find question id='" + id + "'.");
-            return result;
+
+            statement = connection.prepareStatement(FIND_ANSWERS_BY_QUESTION_ID_QUERY);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            question.get(0).setAnswers(getAnswers(resultSet));
+            logger.debug("Find answers for question id='" + id + "'.");
+
+            return question.get(0);
 
         } catch (SQLException e) {
             throw new DAOException("Cannot find question id ='" + id + "'.", e);
@@ -169,15 +248,41 @@ public class QuestionDAOImpl implements QuestionDAO {
             theme.setTitle(themeTitle);
             question.setTheme(theme);
 
-            String username = resultSet.getString(DatabaseTable.Users.USERNAME);
-            User user = new User();
-            user.setUserId(resultSet.getInt(DatabaseTable.Users.USER_ID));
-            user.setUsername(username);
-            question.setUser(user);
+            question.setUser(getUser(resultSet));
 
             result.add(question);
         }
         return result;
+    }
+
+    private List<Answer> getAnswers(ResultSet resultSet) throws SQLException {
+        List<Answer> result = new ArrayList<>();
+        while (resultSet.next()) {
+            Answer answer = new Answer();
+
+            int answerId = resultSet.getInt(DatabaseTable.Answers.ANSWER_ID);
+            answer.setAnswerId(answerId);
+
+            String answerData = resultSet.getString(DatabaseTable.Answers.ANSWER);
+            answer.setAnswer(answerData);
+
+            answer.setUser(getUser(resultSet));
+
+            result.add(answer);
+        }
+        return result;
+    }
+
+    private User getUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+
+        Integer userId = resultSet.getInt(DatabaseTable.Users.USER_ID);
+        user.setUserId(userId);
+
+        String username = resultSet.getString(DatabaseTable.Users.USERNAME);
+        user.setUsername(username);
+
+        return user;
     }
 
 }
