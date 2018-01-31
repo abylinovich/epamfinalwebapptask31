@@ -7,7 +7,6 @@
 <div class="container">
     <section id="content">
         <form name="answerForm" action="/action" method="post">
-            <fmt:message key="answer" />
             <input type="hidden" name="command" value="answer" />
             <input type="hidden" name="questionId" value="${question.questionId}" />
             <div class="form-group">

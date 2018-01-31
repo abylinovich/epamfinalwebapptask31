@@ -6,7 +6,7 @@
 
   <servlet>
     <servlet-name>FrontController</servlet-name>
-    <servlet-class>by.epam.final_project.controller.FrontController</servlet-class>
+    <servlet-class>by.epam.finalproject.controller.FrontController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FrontController</servlet-name>
@@ -15,7 +15,7 @@
 
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
-    <filter-class>by.epam.final_project.controller.filter.CharacterEncodingFilter</filter-class>
+    <filter-class>by.epam.finalproject.filter.CharacterEncodingFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CharacterEncodingFilter</filter-name>
@@ -25,7 +25,7 @@
 
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
-    <filter-class>by.epam.final_project.controller.filter.AuthenticationFilter</filter-class>
+    <filter-class>by.epam.finalproject.filter.AuthenticationFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>AuthenticationFilter</filter-name>
@@ -35,7 +35,7 @@
 
   <filter>
     <filter-name>ChangeLanguageFilter</filter-name>
-    <filter-class>by.epam.final_project.controller.filter.ChangeLanguageFilter</filter-class>
+    <filter-class>by.epam.finalproject.filter.ChangeLanguageFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>ChangeLanguageFilter</filter-name>
@@ -45,7 +45,7 @@
 
   <filter>
     <filter-name>PaginationFilter</filter-name>
-    <filter-class>by.epam.final_project.controller.filter.PaginationFilter</filter-class>
+    <filter-class>by.epam.finalproject.filter.PaginationFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>PaginationFilter</filter-name>
