@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+
 public class UserValidatorImpl extends UserValidatorTemplate {
 
     private final static Logger logger = Logger.getLogger(UserValidatorImpl.class);
@@ -25,46 +26,47 @@ public class UserValidatorImpl extends UserValidatorTemplate {
     @Override
     public boolean validate(User user) {
         if(user == null) {
+            logger.debug("Validation error. User is null.");
             return false;
         }
         UserRole role = user.getRole();
         if(!validateRole(role)) {
-            logger.debug("Validation failed. Role is null.");
+            logger.debug("Validation error. Role is null.");
             return false;
         }
         String login = user.getUsername();
         if(!validateLogin(login)) {
-            logger.debug("Validation failed. Invalid login for user '" + login + "'.");
+            logger.debug("Validation error. Invalid login for user '" + login + "'.");
             return false;
         }
         String password = user.getPassword();
         if(!validatePassword(password)) {
-            logger.debug("Validation failed. Invalid password for user '" + login + "'.");
+            logger.debug("Validation error. Invalid password for user '" + login + "'.");
             return false;
         }
         String firstName = user.getFirstName();
         if(!validateFirstName(firstName)) {
-            logger.debug("Validation failed. Invalid first name '" + firstName + "' for user '" + login + "'.");
+            logger.debug("Validation error. Invalid first name '" + firstName + "' for user '" + login + "'.");
             return false;
         }
         String lastName = user.getLastName();
         if(!validateLastName(lastName)) {
-            logger.debug("Validation failed. Invalid last name '" + lastName + "' for user '" + login + "'.");
+            logger.debug("Validation error. Invalid last name '" + lastName + "' for user '" + login + "'.");
             return false;
         }
         String email = user.getEmail();
         if(!validateEmail(email)) {
-            logger.debug("Validation failed. Invalid email '" + email + "' for user '" + login + "'.");
+            logger.debug("Validation error. Invalid email '" + email + "' for user '" + login + "'.");
             return false;
         }
         int age = user.getAge();
         if(!validateAge(age)) {
-            logger.debug("Validation failed. Invalid age '" + age + "' for user '" + login + "'.");
+            logger.debug("Validation error. Invalid age '" + age + "' for user '" + login + "'.");
             return false;
         }
         Locale locale = user.getLocale();
         if(!validateLocale(locale)) {
-            logger.debug("Validation failed. Locale is null.");
+            logger.debug("Validation error. Locale is null.");
             return false;
         }
         logger.debug("User validation successful for user '" + login + "'.");
@@ -74,11 +76,11 @@ public class UserValidatorImpl extends UserValidatorTemplate {
     @Override
     public boolean validateLogin(String login) {
         if(checkForNullAndEmpty(login)) {
-            logger.debug("Login validation failed. Login is null or empty.");
+            logger.debug("Validation error. Login is null or empty.");
             return false;
         }
         if(!usernamePattern.matcher(login).matches()) {
-            logger.debug("Login validation failed. Regex mismatch.");
+            logger.debug("Validation error. Login regex mismatch.");
             return false;
         }
         logger.debug("Login validation successful.");
@@ -88,11 +90,11 @@ public class UserValidatorImpl extends UserValidatorTemplate {
     @Override
     public boolean validatePassword(String password) {
         if(checkForNullAndEmpty(password)) {
-            logger.debug("Password validation failed. Password is null or empty.");
+            logger.debug("Validation error. Password is null or empty.");
             return false;
         }
         if(!usernamePattern.matcher(password).matches()) {
-            logger.debug("Password validation failed. Regex mismatch.");
+            logger.debug("Validation error. Password regex mismatch.");
             return false;
         }
         logger.debug("Password validation successful.");
@@ -101,6 +103,7 @@ public class UserValidatorImpl extends UserValidatorTemplate {
 
     private boolean validateRole(UserRole role) {
         if(role == null) {
+            logger.debug("Validation error. Role is null.");
             return false;
         }
         return true;

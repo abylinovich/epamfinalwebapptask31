@@ -3,6 +3,7 @@
 
 <fmt:setBundle basename="Logout" var="logout" scope="session" />
 
+
 <c:if test="${not empty user}">
     <div class="btn-group-vertical">
         <a class="btn button-lang" href="/action?command=question&do=my"><fmt:message key="home" bundle="${logout}" /></a>

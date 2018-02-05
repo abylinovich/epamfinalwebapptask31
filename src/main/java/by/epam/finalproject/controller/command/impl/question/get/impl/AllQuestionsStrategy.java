@@ -1,5 +1,6 @@
-package by.epam.finalproject.controller.command.impl.question;
+package by.epam.finalproject.controller.command.impl.question.get.impl;
 
+import by.epam.finalproject.controller.command.impl.question.get.QuestionDoGetStrategy;
 import by.epam.finalproject.controller.paginator.Paginator;
 import by.epam.finalproject.controller.paginator.PaginatorFactory;
 import by.epam.finalproject.entity.Question;
@@ -19,7 +20,7 @@ import static by.epam.finalproject.controller.command.constant.HttpParameterName
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.TOTAL_QUESTIONS_ATTRIBUTE_NAME;
 
 
-public class AllQuestionsStrategy implements QuestionStrategy {
+public class AllQuestionsStrategy implements QuestionDoGetStrategy {
 
     private final static Logger logger = Logger.getLogger(AllQuestionsStrategy.class);
 
@@ -28,20 +29,16 @@ public class AllQuestionsStrategy implements QuestionStrategy {
 
 
     @Override
-    public void setPageContent(HttpServletRequest request, HttpServletResponse response) {
+    public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         String page = paginator.checkParameter(request, PAGE_PARAMETER_NAME);
         String count = paginator.checkParameter(request, COUNT_PARAMETER_NAME);
 
-        try {
-            int total = questionService.getQuestionsCount();
-            request.getSession().setAttribute(TOTAL_QUESTIONS_ATTRIBUTE_NAME, String.valueOf(total));
+        int total = questionService.getQuestionsCount();
+        request.getSession().setAttribute(TOTAL_QUESTIONS_ATTRIBUTE_NAME, String.valueOf(total));
 
-            List<Question> questions = questionService.getQuestions(page, count);
-            logger.debug("Get '" + count + "' questions for page '" + page + "'.");
-            request.setAttribute(QUESTIONS_PARAMETER_NAME, questions);
-        } catch (ServiceException e) {
-            logger.error("Cannot get questions.", e);
-        }
+        List<Question> questions = questionService.getQuestions(page, count);
+        request.setAttribute(QUESTIONS_PARAMETER_NAME, questions);
+        logger.debug("All questions page has been successfully created.");
     }
 
 }

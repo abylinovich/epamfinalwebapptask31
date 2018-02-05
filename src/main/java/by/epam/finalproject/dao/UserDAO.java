@@ -9,4 +9,6 @@ public interface UserDAO {
 
     void register(User user) throws DAOException;
 
+    User findUserByQuestionId(int id) throws DAOException;
+
 }

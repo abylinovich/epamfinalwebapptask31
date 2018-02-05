@@ -33,12 +33,18 @@ public class HttpParameterName {
     public static final String QUESTION_THEME_PARAMETER_NAME = "theme";
 
     public static final String DO_PARAMETER_NAME = "do";
-    public static final String ALL_DO_PARAMETER_VALUE = "all";
-    public static final String MY_DO_PARAMETER_VALUE = "my";
-    public static final String GET_DO_PARAMETER_VALUE = "get";
-    public static final String ASK_DO_PARAMETER_VALUE = "ask";
+    public static final String ALL_DO_PARAMETER_NAME = "all";
+    public static final String MY_DO_PARAMETER_NAME = "my";
+    public static final String GET_DO_PARAMETER_NAME = "get";
+    public static final String ASK_DO_PARAMETER_NAME = "ask";
+
+    public static final String CREATE_DO_PARAMETER_NAME = "create";
+    public static final String EDIT_DO_PARAMETER_NAME = "edit";
+    public static final String DELETE_DO_PARAMETER_NAME = "delete";
+
     public static final String QUESTIONS_PARAMETER_NAME = "questions";
     public static final String QUESTION_PARAMETER_NAME = "question";
+    public static final String DELETE_SUCCESS_PARAMETER_NAME = "deleteSuccess";
     public static final String ANSWER_PARAMETER_NAME = "answer";
     public static final String THEMES_PARAMETER_NAME = "themes";
     public static final String INPUT_PARAMETER_NAME = "input";
@@ -52,6 +58,9 @@ public class HttpParameterName {
     public static final String PROCESSED_ATTRIBUTE_NAME = "processed";
 
 
+    public static final String BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME = "badRequest";
+    public static final String SERVER_ERROR_ATTRIBUTE_NAME = "serverError";
+
     public static final String MESSAGE_ERROR_ATTRIBUTE_NAME = "generalError";
     public static final String METHOD_ERROR_ATTRIBUTE_NAME = "methodError";
 
@@ -60,6 +69,7 @@ public class HttpParameterName {
     public static final String CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME = "cannotRegisterError";
     public static final String ADD_QUESTION_ERROR_ATTRIBUTE_NAME = "addQuestionError";
     public static final String ADD_ANSWER_ERROR_ATTRIBUTE_NAME = "addAnswerError";
+    public static final String DELETE_QUESTION_ERROR_ATTRIBUTE_NAME = "deleteQuestionError";
 
 
     private HttpParameterName() {

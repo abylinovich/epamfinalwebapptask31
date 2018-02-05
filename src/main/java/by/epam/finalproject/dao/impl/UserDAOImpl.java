@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 
+
 public class UserDAOImpl implements UserDAO {
 
     private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
@@ -23,11 +24,19 @@ public class UserDAOImpl implements UserDAO {
     private String REGISTER_USER_QUERY =
             "INSERT INTO users (role, username, password, first_name, last_name, email, locale_id) " +
             "VALUES (?, ?, MD5(?), ?, ?, ?, (SELECT locale_id FROM locales l WHERE l.language = ?))";
-    private String FIND_USER_QUERY =
+    private String LOGIN_USER_QUERY =
             "SELECT u.user_id, u.role, u.username, u.first_name, u.last_name, u.email, l.language, l.country " +
                     "FROM users u " +
                     "JOIN locales l ON u.locale_id = l.locale_id " +
                     "WHERE u.username = ? AND u.password = MD5(?)";
+
+    private String FIND_USER_BY_QUESTION_ID_QUERY =
+            "SELECT u.user_id, u.role, u.username, u.first_name, u.last_name, u.email, l.language, l.country " +
+                    "FROM users u " +
+                    "JOIN locales l ON u.locale_id = l.locale_id " +
+                    "JOIN questions q ON u.user_id = q.user_id " +
+                    "WHERE q.question_id = ?";
+
 
     @Override
     public User findUser(String login, String password) throws DAOException {
@@ -38,41 +47,21 @@ public class UserDAOImpl implements UserDAO {
         try {
             connection = connectionPool.getConnection();
 
-            statement = connection.prepareStatement(FIND_USER_QUERY);
+            statement = connection.prepareStatement(LOGIN_USER_QUERY);
 
             statement.setString(1, login);
             statement.setString(2, password);
 
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
-                user = new User();
-                int id = resultSet.getInt(DatabaseTable.Users.USER_ID);
-                user.setUserId(id);
-                String role = resultSet.getString(DatabaseTable.Users.ROLE);
-                user.setRole(UserRole.valueOf(role.toUpperCase()));
-                String username = resultSet.getString(DatabaseTable.Users.USERNAME);
-                user.setUsername(username);
-                String firstName = resultSet.getString(DatabaseTable.Users.FIRST_NAME);
-                user.setFirstName(firstName);
-                String lastName = resultSet.getString(DatabaseTable.Users.LAST_NAME);
-                user.setLastName(lastName);
-                String email = resultSet.getString(DatabaseTable.Users.EMAIL);
-                user.setEmail(email);
-                String language = resultSet.getString(DatabaseTable.Locales.LANGUAGE);
-                String country = resultSet.getString(DatabaseTable.Locales.COUNTRY);
-                user.setLocale(new Locale(language, country));
-            }
-            return user;
+            return buildUser(resultSet);
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to login user", e);
+            throw new DAOException("Failed to find user", e);
         } finally {
             connectionPool.close(connection, statement, resultSet);
         }
     }
-
-
 
     @Override
     public void register(User user) throws DAOException {
@@ -93,10 +82,55 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to register user", e);
+            throw new DAOException("Failed to find user", e);
         } finally {
             connectionPool.close(connection, statement);
         }
+    }
+
+    @Override
+    public User findUserByQuestionId(int id) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+
+            statement = connection.prepareStatement(FIND_USER_BY_QUESTION_ID_QUERY);
+            statement.setInt(1, id);
+
+            resultSet = statement.executeQuery();
+
+            return buildUser(resultSet);
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to find user by question id='" + id + "'.", e);
+        } finally {
+            connectionPool.close(connection, statement, resultSet);
+        }
+    }
+
+    private User buildUser(ResultSet resultSet) throws SQLException {
+        User user = null;
+        if (resultSet.next()) {
+            user = new User();
+            int id = resultSet.getInt(DatabaseTable.Users.USER_ID);
+            user.setUserId(id);
+            String role = resultSet.getString(DatabaseTable.Users.ROLE);
+            user.setRole(UserRole.valueOf(role.toUpperCase()));
+            String username = resultSet.getString(DatabaseTable.Users.USERNAME);
+            user.setUsername(username);
+            String firstName = resultSet.getString(DatabaseTable.Users.FIRST_NAME);
+            user.setFirstName(firstName);
+            String lastName = resultSet.getString(DatabaseTable.Users.LAST_NAME);
+            user.setLastName(lastName);
+            String email = resultSet.getString(DatabaseTable.Users.EMAIL);
+            user.setEmail(email);
+            String language = resultSet.getString(DatabaseTable.Locales.LANGUAGE);
+            String country = resultSet.getString(DatabaseTable.Locales.COUNTRY);
+            user.setLocale(new Locale(language, country));
+        }
+        return user;
     }
 
 }

@@ -103,7 +103,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void addQuestion(Question question) throws ServiceException {
         if(!questionValidator.validate(question)) {
-            throw new ServiceException("Validation error. Invalid question.");
+            throw new ServiceException("Validation error. Invalid question data.");
         }
         try {
             questionDAO.insertQuestion(question);
@@ -111,5 +111,30 @@ public class QuestionServiceImpl implements QuestionService {
             throw new ServiceException("Cannot add question.", e);
         }
     }
+
+    @Override
+    public void editQuestion(Question question) throws ServiceException {
+        if(!questionValidator.validateQuestionEdit(question)) {
+            throw new ServiceException("Validation error. Invalid question data.");
+        }
+        try {
+            questionDAO.updateQuestion(question);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot edit question.", e);
+        }
+    }
+
+    @Override
+    public void deleteQuestion(String id) throws ServiceException {
+        if(!parameterValidator.validateNumeric(id)) {
+            throw new ServiceException("Validation error. Invalid question id ='" + id + "'.");
+        }
+        try {
+            questionDAO.removeQuestion(Integer.valueOf(id));
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot add question.", e);
+        }
+    }
+
 
 }

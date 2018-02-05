@@ -25,6 +25,7 @@ public class AnswerServiceImpl implements AnswerService {
         }
         try {
             answerDAO.insertAnswer(answer);
+            logger.debug("Answer has been successfully added.");
         } catch (DAOException e) {
             throw new ServiceException("Cannot add answer.", e);
         }

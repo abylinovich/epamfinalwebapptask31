@@ -49,7 +49,6 @@ public class PaginatorImpl implements Paginator {
             if(parameterValidator.validateNumeric(value)) {
                 request.getSession().setAttribute(parameter, value);
                 logger.debug("Set session parameter '" + parameter + "' = " + value);
-
             }
             String query = (String) request.getAttribute(QUERY_ATTRIBUTE_NAME);
             if(query == null) {

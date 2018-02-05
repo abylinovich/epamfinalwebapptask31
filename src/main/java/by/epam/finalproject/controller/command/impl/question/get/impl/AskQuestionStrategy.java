@@ -1,5 +1,6 @@
-package by.epam.finalproject.controller.command.impl.question;
+package by.epam.finalproject.controller.command.impl.question.get.impl;
 
+import by.epam.finalproject.controller.command.impl.question.get.QuestionDoGetStrategy;
 import by.epam.finalproject.entity.Theme;
 import by.epam.finalproject.entity.User;
 import by.epam.finalproject.service.ServiceFactory;
@@ -19,29 +20,26 @@ import static by.epam.finalproject.controller.command.constant.HttpParameterName
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.THEMES_PARAMETER_NAME;
 
 
-public class AskQuestionStrategy implements QuestionStrategy {
+public class AskQuestionStrategy implements QuestionDoGetStrategy {
 
     private final static Logger logger = Logger.getLogger(AskQuestionStrategy.class);
 
     private ThemeService themeService = ServiceFactory.getInstance().getThemeService();
 
     @Override
-    public void setPageContent(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            request.setAttribute(INPUT_PARAMETER_NAME, true);
+    public void processGet(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        request.setAttribute(INPUT_PARAMETER_NAME, true);
 
-            String language = (String) request.getSession().getAttribute(LANGUAGE_PARAMETER_NAME);
-            if(language == null) {
-                User user = (User) request.getSession().getAttribute(USER_PARAMETER_NAME);
-                language = user.getLocale().getLanguage();
-            }
-            Locale locale = new Locale(language);
-
-            List<Theme> themes = themeService.getThemes(locale);
-            request.setAttribute(THEMES_PARAMETER_NAME, themes);
-        } catch (ServiceException e) {
-            logger.error("Cannot render ask question page.", e);
+        String language = (String) request.getSession().getAttribute(LANGUAGE_PARAMETER_NAME);
+        if(language == null) {
+            User user = (User) request.getSession().getAttribute(USER_PARAMETER_NAME);
+            language = user.getLocale().getLanguage();
         }
+        Locale locale = new Locale(language);
+
+        List<Theme> themes = themeService.getThemes(locale);
+        request.setAttribute(THEMES_PARAMETER_NAME, themes);
+        logger.debug("Ask question page has been successfully created.");
     }
 
 }

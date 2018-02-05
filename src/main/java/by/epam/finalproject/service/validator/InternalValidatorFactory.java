@@ -2,6 +2,7 @@ package by.epam.finalproject.service.validator;
 
 import by.epam.finalproject.service.validator.impl.ThemeValidatorImpl;
 
+
 public class InternalValidatorFactory {
 
     private static final InternalValidatorFactory INTERNAL_VALIDATOR_FACTORY = new InternalValidatorFactory();

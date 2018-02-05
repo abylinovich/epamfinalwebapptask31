@@ -16,6 +16,7 @@ public class ParameterValidatorImpl implements ParameterValidator {
     @Override
     public boolean validateNumeric(String value) {
         if(value == null) {
+            logger.debug("Validation error. Value is null.");
             return false;
         }
         return numericPattern.matcher(value).matches();

@@ -27,15 +27,18 @@ import static by.epam.finalproject.controller.command.constant.PagePath.ERROR_PA
 import static by.epam.finalproject.controller.command.constant.PagePath.MAIN_PAGE_PATH;
 import static by.epam.finalproject.controller.command.constant.PagePath.REGISTER_PAGE_PATH;
 
+
 public class RegisterCommand implements Command {
 
     private final static Logger logger = Logger.getLogger(RegisterCommand.class);
 
     private UserService userService = ServiceFactory.getInstance().getUserService();
 
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher(REGISTER_PAGE_PATH).forward(request, response);
+        logger.debug("Forward to register page.");
     }
 
     @Override
@@ -50,10 +53,12 @@ public class RegisterCommand implements Command {
             HttpSession session = request.getSession(true);
             session.setAttribute(USERNAME_PARAMETER_NAME, user);
             response.sendRedirect(MAIN_PAGE_PATH);
+
         } catch (ServiceException e) {
             logger.error("Cannot register user.", e);
             request.setAttribute(CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME, true);
             request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+            logger.debug("Forward to error page.");
         }
     }
 

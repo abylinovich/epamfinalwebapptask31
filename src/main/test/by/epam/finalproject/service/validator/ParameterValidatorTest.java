@@ -1,11 +1,11 @@
 package by.epam.finalproject.service.validator;
 
-
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 
 public class ParameterValidatorTest {
 
@@ -41,6 +41,5 @@ public class ParameterValidatorTest {
         String value = "42";
         assertTrue(validator.validateNumeric(value));
     }
-
 
 }

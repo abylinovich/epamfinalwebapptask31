@@ -4,6 +4,7 @@
 
 <fmt:setBundle basename="Footer" var="foot" scope="session" />
 
+
 <footer>
     <div class="container-fluid">
         <div class="row">
@@ -15,7 +16,7 @@
                     <c:when test="${not empty random}">
                         <c:forEach items="${random}" var="item">
                             <c:set var="question" value="${item}" scope="request" />
-                            <%@include file="/jsp/block/question.jsp"%>
+                            <%@include file="/jsp/block/question/question.jsp"%>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>

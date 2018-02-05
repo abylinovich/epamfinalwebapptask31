@@ -4,6 +4,7 @@ import by.epam.finalproject.entity.Theme;
 import by.epam.finalproject.service.validator.ThemeValidator;
 import org.apache.log4j.Logger;
 
+
 public class ThemeValidatorImpl implements ThemeValidator {
 
     private final static Logger logger = Logger.getLogger(ThemeValidatorImpl.class);
@@ -12,6 +13,7 @@ public class ThemeValidatorImpl implements ThemeValidator {
     @Override
     public boolean validate(Theme theme) {
         if(theme == null) {
+            logger.debug("Validation error. Theme is null.");
             return false;
         }
         Integer id = theme.getThemeId();

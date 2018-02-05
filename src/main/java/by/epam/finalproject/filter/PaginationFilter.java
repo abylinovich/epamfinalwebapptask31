@@ -14,7 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static by.epam.finalproject.controller.command.constant.HttpParameterName.*;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.COUNT_PARAMETER_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.PAGE_PARAMETER_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.PROCESSED_ATTRIBUTE_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.QUERY_ATTRIBUTE_NAME;
+
 
 public class PaginationFilter implements Filter {
 
@@ -45,6 +49,5 @@ public class PaginationFilter implements Filter {
     @Override
     public void destroy() {
     }
-
 
 }

@@ -7,6 +7,7 @@
 
 <c:set var="user" value="${sessionScope.user}" scope="session" />
 
+
 <script src="../../resources/js/libs/jquery-3.2.1.min.js"></script>
 <script src="../../resources/js/validation.js"></script>
 <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
@@ -21,7 +22,7 @@
                 <%@include file="language-menu.jsp"%>
             </div>
             <div class="col-sm-2">
-                <%@include file="question-menu.jsp"%>
+                <%@include file="question/question-menu.jsp"%>
             </div>
             <div class="col-sm-2">
             </div>

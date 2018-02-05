@@ -14,9 +14,9 @@ public class CharacterEncodingFilter implements Filter {
 
     private final static Logger logger = Logger.getLogger(AuthenticationFilter.class);
 
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override

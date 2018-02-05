@@ -16,11 +16,13 @@ import java.util.List;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.COUNT_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.ID_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.PAGE_PARAMETER_NAME;
-import static by.epam.finalproject.controller.command.constant.HttpParameterName.MESSAGE_ERROR_ATTRIBUTE_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.QUESTIONS_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.RANDOM_QUESTION_PARAMETER_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.MESSAGE_ERROR_ATTRIBUTE_NAME;
 import static by.epam.finalproject.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 import static by.epam.finalproject.controller.command.constant.PagePath.MAIN_PAGE_PATH;
+
 
 public class UserCommand implements Command {
 
@@ -38,18 +40,25 @@ public class UserCommand implements Command {
             String userId = request.getParameter(ID_PARAMETER_NAME);
             List<Question> userQuestions = questionService.getQuestionsByUser(userId, page, count);
             request.setAttribute(QUESTIONS_PARAMETER_NAME, userQuestions);
+            logger.debug("Found questions for user id='" + userId + "'.");
         } catch (ServiceException e) {
-            request.setAttribute(QUESTIONS_PARAMETER_NAME, null);
+            logger.error("Failed to get questions.", e);
+            request.setAttribute(BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME, true);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+            return;
         }
 
         try {
             List<Question> randomQuestion = questionService.getRandomQuestion();
             request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, randomQuestion);
+            logger.debug("Found random question.");
         } catch (ServiceException e) {
+            logger.error("Failed to get random question.", e);
             request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, null);
         }
-        logger.debug("Show main page.");
+
         request.getRequestDispatcher(MAIN_PAGE_PATH).forward(request, response);
+        logger.debug("Forward to main page.");
     }
 
     @Override

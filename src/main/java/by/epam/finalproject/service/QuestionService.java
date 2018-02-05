@@ -5,6 +5,7 @@ import by.epam.finalproject.service.exception.ServiceException;
 
 import java.util.List;
 
+
 public interface QuestionService {
 
     List<Question> getRandomQuestion() throws ServiceException;
@@ -20,5 +21,9 @@ public interface QuestionService {
     int getQuestionsCountForUser(String id) throws ServiceException;
 
     void addQuestion(Question question) throws ServiceException;
+
+    void editQuestion(Question question) throws ServiceException;
+
+    void deleteQuestion(String id) throws ServiceException;
 
 }

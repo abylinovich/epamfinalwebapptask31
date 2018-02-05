@@ -20,6 +20,7 @@ public class ChangeLanguageFilter implements Filter {
 
     private final static Logger logger = Logger.getLogger(ChangeLanguageFilter.class);
 
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }

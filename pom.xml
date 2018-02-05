@@ -8,6 +8,7 @@
   <name>FinalWebApplication Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+
     <!-- JUnit -->
     <dependency>
       <groupId>junit</groupId>
@@ -23,7 +24,6 @@
       <version>1.10.19</version>
       <scope>test</scope>
     </dependency>
-
 
     <!-- JSTL -->
     <dependency>

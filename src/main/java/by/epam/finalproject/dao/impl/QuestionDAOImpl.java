@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class QuestionDAOImpl implements QuestionDAO {
 
     private static final Logger logger = Logger.getLogger(QuestionDAOImpl.class);
@@ -60,6 +61,12 @@ public class QuestionDAOImpl implements QuestionDAO {
 
     private String INSERT_QUESTION_QUERY =
             "INSERT INTO questions (question_title, question, theme_id, user_id) VALUE (?, ?, ?, ?)";
+
+    private String REMOVE_QUESTION_QUERY =
+            "DELETE FROM questions WHERE question_id = ?";
+
+    private String UPDATE_QUESTION_QUERY =
+            "UPDATE questions SET question_title = ?, question = ? WHERE question_id = ?";
 
 
     @Override
@@ -189,7 +196,11 @@ public class QuestionDAOImpl implements QuestionDAO {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             question = createQuestionsList(resultSet);
-            logger.debug("Find question id='" + id + "'.");
+            if(question.size() == 0) {
+                logger.debug("No questions found by id='" + id + "'.");
+                return null;
+            }
+            logger.debug("Question id='" + id + "' was found.");
 
             statement = connection.prepareStatement(FIND_ANSWERS_BY_QUESTION_ID_QUERY);
             statement.setInt(1, id);
@@ -224,6 +235,48 @@ public class QuestionDAOImpl implements QuestionDAO {
 
         } catch (SQLException e) {
             throw new DAOException("Failed to insert question", e);
+        } finally {
+            connectionPool.close(connection, statement);
+        }
+    }
+
+    @Override
+    public void updateQuestion(Question question) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connectionPool.getConnection();
+
+            statement = connection.prepareStatement(UPDATE_QUESTION_QUERY);
+            statement.setString(1, question.getTitle());
+            statement.setString(2, question.getQuestion());
+            statement.setInt(3, question.getQuestionId());
+
+            statement.executeUpdate();
+            logger.debug("Question has been successfully update.");
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to update question", e);
+        } finally {
+            connectionPool.close(connection, statement);
+        }
+    }
+
+    @Override
+    public void removeQuestion(int id) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connectionPool.getConnection();
+
+            statement = connection.prepareStatement(REMOVE_QUESTION_QUERY);
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+            logger.debug("Question has been removed successfully from database.");
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to remove question", e);
         } finally {
             connectionPool.close(connection, statement);
         }

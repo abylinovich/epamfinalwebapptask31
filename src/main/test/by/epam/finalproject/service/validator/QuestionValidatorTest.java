@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 
+
 public class QuestionValidatorTest {
 
     private QuestionValidator validator;

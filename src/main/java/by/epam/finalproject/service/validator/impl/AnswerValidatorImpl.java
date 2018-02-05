@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import java.util.regex.Pattern;
 
+
 public class AnswerValidatorImpl implements AnswerValidator {
 
     private final static Logger logger = Logger.getLogger(AnswerValidatorImpl.class);
@@ -18,6 +19,7 @@ public class AnswerValidatorImpl implements AnswerValidator {
     @Override
     public boolean validate(Answer answer) {
         if(answer == null) {
+            logger.debug("Validation error. Answer is null.");
             return false;
         }
         String data = answer.getAnswer();

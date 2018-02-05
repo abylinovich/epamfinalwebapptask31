@@ -12,6 +12,7 @@ import static by.epam.finalproject.controller.command.constant.HttpParameterName
 import static by.epam.finalproject.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 import static by.epam.finalproject.controller.command.constant.PagePath.LOGIN_PAGE_PATH;
 
+
 public class LogoutCommand implements Command {
 
     private final static Logger logger = Logger.getLogger(LogoutCommand.class);
@@ -27,6 +28,7 @@ public class LogoutCommand implements Command {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(MESSAGE_ERROR_ATTRIBUTE_NAME, true);
         request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+        logger.debug("Method POST is not available for this command.");
     }
 
 }

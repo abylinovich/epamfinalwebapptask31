@@ -32,15 +32,15 @@ public class LoginCommand implements Command {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher(LOGIN_PAGE_PATH).forward(request, response);
+        logger.debug("Forward to login page.");
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter(USERNAME_PARAMETER_NAME);
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
-        User user = null;
         try {
-            user = userService.findUser(login, password);
+            User user = userService.getUser(login, password);
             if(user != null) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute(USER_PARAMETER_NAME, user);

@@ -3,6 +3,7 @@
 
 <fmt:setBundle basename="Answer" scope="session" />
 
+
 <div class="container">
     <section id="content" style="width: 100%">
         <h3>

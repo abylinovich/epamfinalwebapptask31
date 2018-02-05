@@ -1,5 +1,6 @@
-package by.epam.finalproject.controller.command.impl.question;
+package by.epam.finalproject.controller.command.impl.question.get;
 
+import by.epam.finalproject.controller.command.impl.question.get.impl.AllQuestionsStrategy;
 import by.epam.finalproject.entity.Question;
 import by.epam.finalproject.service.QuestionService;
 import by.epam.finalproject.service.ServiceFactory;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.RANDOM_QUESTION_PARAMETER_NAME;
+
 
 public class FooterBuilder {
 
@@ -28,13 +30,10 @@ public class FooterBuilder {
         return FOOTER_BUILDER;
     }
 
-    public void setFooterContent(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            List<Question> randomQuestion = questionService.getRandomQuestion();
-            request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, randomQuestion);
-        } catch (ServiceException e) {
-            logger.error("Cannot reach random question.", e);
-        }
+    public void setFooterContent(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+        List<Question> randomQuestion = questionService.getRandomQuestion();
+        request.setAttribute(RANDOM_QUESTION_PARAMETER_NAME, randomQuestion);
+        logger.debug("Footer has been successfully created.");
     }
 
 }

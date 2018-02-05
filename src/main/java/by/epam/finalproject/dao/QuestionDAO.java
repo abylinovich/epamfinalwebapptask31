@@ -21,4 +21,8 @@ public interface QuestionDAO {
 
     void insertQuestion(Question question) throws DAOException;
 
+    void updateQuestion(Question question) throws DAOException;
+
+    void removeQuestion(int id) throws DAOException;
+
 }

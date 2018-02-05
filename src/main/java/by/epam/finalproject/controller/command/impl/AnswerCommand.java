@@ -33,7 +33,7 @@ public class AnswerCommand implements Command {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(METHOD_ERROR_ATTRIBUTE_NAME, true);
         request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
-
+        logger.debug("Method GET is not available for this command.");
     }
 
     @Override

@@ -12,13 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.COMMAND_PARAMETER_NAME;
+import static by.epam.finalproject.controller.command.constant.PagePath.ERROR_PAGE_PATH;
 
 public class FrontController extends HttpServlet {
 
     private static final long serialVersionUID = -1131956170161219954L;
 
     private Logger logger = Logger.getLogger(FrontController.class);
+
+    private CommandResolver commandResolver = CommandResolver.getInstance();
 
 
     @Override
@@ -34,13 +38,25 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = getCommand(request);
-        command.doGet(request, response);
+        if(command != null) {
+            command.doGet(request, response);
+        } else {
+            request.setAttribute(BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME, true);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+            logger.debug("Command not found. Forward to error page.");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = getCommand(request);
-        command.doPost(request, response);
+        if(command != null) {
+            command.doPost(request, response);
+        } else {
+            request.setAttribute(BAD_REQUEST_PARAMETER_ERROR_ATTRIBUTE_NAME, true);
+            request.getRequestDispatcher(ERROR_PAGE_PATH).forward(request, response);
+            logger.debug("Command not found. Forward to error page.");
+        }
     }
 
     @Override
@@ -51,10 +67,7 @@ public class FrontController extends HttpServlet {
 
     private Command getCommand(HttpServletRequest request) throws ServletException {
         String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
-        Command command = CommandResolver.getInstance().getCommand(commandName);
-        if(command == null) {
-            throw new ServletException("No such command found.");
-        }
+        Command command = commandResolver.getCommand(commandName);
         return command;
     }
 
