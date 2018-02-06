@@ -1,10 +1,10 @@
 +function () {
 
-    var $alphanumericPattern = /^[\d\u0041-\u007E\u0400-\u04FF]{3,15}$/,
+    var $alphanumericPattern = /^[\d\u0041-\u007E\u0061-\u007A\u0410-\u044F]{3,15}$/,
         $emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        $textPattern = /^[\u0020-\u007E\u0400-\u04FF]{2,15}$/,
-        $questionTitlePattern = /^[\u0020-\u007E\u0400-\u04FF]{1,50}$/,
-        $messagePattern = /^[\u0020-\u007E\u0400-\u04FF]{1,255}$/
+        $textPattern = /^[\u0041-\u005A\u0061-\u007A\u0410-\u044F]{2,15}$/,
+        $questionTitlePattern = /^[\u0020-\u007E\u0410-\u044F]{1,50}$/,
+        $messagePattern = /^[\u0020-\u007E\u0410-\u044F]{1,255}$/
     ;
 
     var Validation = {
@@ -36,9 +36,6 @@
             if(value.val() === "") {
                 return true;
             }
-            console.log(value.val());
-            console.log($alphanumericPattern.test(value.val()));
-            console.log($alphanumericPattern.test(value));
             return $alphanumericPattern.test(value.val());
         },
 
@@ -69,10 +66,10 @@
             if(age === "") {
                 return true;
             }
-            if(age < 10 || age > 99) {
-                return false;
+            if(age > 10 && age < 99) {
+                return true;
             }
-            return true;
+            return false;
         },
 
         validateTitleField: function (value) {

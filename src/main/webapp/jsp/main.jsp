@@ -28,7 +28,7 @@
                     </c:if>
                 </c:when>
                 <c:when test="${not empty question}">
-                    <%@include file="/jsp/block/question/edit-bar.jsp"%>
+                    <%@include file="/jsp/block/question/edit-menu.jsp"%>
                     <%@include file="block/question/question.jsp"%>
                     <%@include file="block/answer-input.jsp"%>
                 </c:when>

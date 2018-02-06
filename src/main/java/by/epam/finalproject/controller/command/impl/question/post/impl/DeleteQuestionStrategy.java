@@ -33,7 +33,7 @@ public class DeleteQuestionStrategy implements QuestionDoPostStrategy {
 
         if(user.getRole() != UserRole.ADMIN) {
             User targetUser = userService.getUserByQuestionId(questionId);
-            if(user.getUserId().equals(targetUser.getUserId())) {
+            if(!user.getUserId().equals(targetUser.getUserId())) {
                 request.setAttribute(DELETE_QUESTION_ERROR_ATTRIBUTE_NAME, true);
                 throw new ServiceException("User name='" + user.getUsername() + "' has no right to delete question id='" + questionId + "'.");
             }

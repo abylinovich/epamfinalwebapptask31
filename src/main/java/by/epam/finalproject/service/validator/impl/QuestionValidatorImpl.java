@@ -16,8 +16,8 @@ public class QuestionValidatorImpl implements QuestionValidator {
     private ThemeValidator themeValidator = InternalValidatorFactory.getInstance().getThemeValidator();
 
 
-    private static final String TITLE_REGEX = "[\u0020-\u007E\u0400-\u04FF]{1,50}";
-    private static final String QUESTION_REGEX = "[\u0020-\u007E\u0400-\u04FF]{1,255}";
+    private static final String TITLE_REGEX = "[\\u0020-\\u007E\\u0410-\\u044F]{1,50}";
+    private static final String QUESTION_REGEX = "[\\u0020-\\u007E\\u0410-\\u044F]{1,255}";
 
     private Pattern titlePattern = Pattern.compile(TITLE_REGEX, Pattern.UNICODE_CHARACTER_CLASS);
     private Pattern questionDataPattern = Pattern.compile(QUESTION_REGEX, Pattern.UNICODE_CHARACTER_CLASS);
@@ -61,7 +61,7 @@ public class QuestionValidatorImpl implements QuestionValidator {
         }
 
         String data = question.getQuestion();
-        if(!validateTitle(data)) {
+        if(!validateQuestionData(data)) {
             return false;
         }
         return true;

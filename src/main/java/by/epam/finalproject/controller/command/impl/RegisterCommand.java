@@ -18,13 +18,15 @@ import java.util.Locale;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.AGE_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.CANNOT_REGISTER_ERROR_ATTRIBUTE_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.USERNAME_PARAMETER_NAME;
+import static by.epam.finalproject.controller.command.constant.HttpParameterName.USER_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.EMAIL_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.LOCALE_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.FIRST_NAME_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.LAST_NAME_PARAMETER_NAME;
 import static by.epam.finalproject.controller.command.constant.HttpParameterName.PASSWORD_PARAMETER_NAME;
+
 import static by.epam.finalproject.controller.command.constant.PagePath.ERROR_PAGE_PATH;
-import static by.epam.finalproject.controller.command.constant.PagePath.MAIN_PAGE_PATH;
+import static by.epam.finalproject.controller.command.constant.PagePath.MY_QUESTIONS_URL_PATTERN;
 import static by.epam.finalproject.controller.command.constant.PagePath.REGISTER_PAGE_PATH;
 
 
@@ -46,13 +48,13 @@ public class RegisterCommand implements Command {
         User user = setUserDetails(request);
         try {
             userService.register(user);
-            userService.resetPassword(user);
-            request.setAttribute(USERNAME_PARAMETER_NAME, user);
-            logger.debug("Registration successful. Redirect to home page.");
+            logger.debug("Registration successful.");
 
             HttpSession session = request.getSession(true);
-            session.setAttribute(USERNAME_PARAMETER_NAME, user);
-            response.sendRedirect(MAIN_PAGE_PATH);
+            user = userService.getUser(user.getUsername(), user.getPassword());
+            session.setAttribute(USER_PARAMETER_NAME, user);
+            logger.debug("Autologin successful. Redirect to home page.");
+            response.sendRedirect(MY_QUESTIONS_URL_PATTERN);
 
         } catch (ServiceException e) {
             logger.error("Cannot register user.", e);

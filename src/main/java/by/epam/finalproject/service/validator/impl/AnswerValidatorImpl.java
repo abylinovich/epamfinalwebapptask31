@@ -11,7 +11,7 @@ public class AnswerValidatorImpl implements AnswerValidator {
 
     private final static Logger logger = Logger.getLogger(AnswerValidatorImpl.class);
 
-    private static final String ANSWER_REGEX = "[\u0020-\u007E\u0400-\u04FF]{1,255}";
+    private static final String ANSWER_REGEX = "[\\u0020-\\u007E\\u0410-\\u044F]{1,255}";
 
     private Pattern answerPattern = Pattern.compile(ANSWER_REGEX, Pattern.UNICODE_CHARACTER_CLASS);
 
